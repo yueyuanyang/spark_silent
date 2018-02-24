@@ -14,4 +14,4 @@
 8. [spark graph 操作07 —— degrees和neighbors](https://github.com/yueyuanyang/spark/blob/master/graph/part8.md)
 9. [spark graph 操作08 —— connectedComponents](https://github.com/yueyuanyang/spark/blob/master/graph/part9.md)
 10. [spark graph 操作09 —— Pregel学习](https://github.com/yueyuanyang/spark/blob/master/graph/part10.md)
-11. [spark graph 操作10 —— GraphFrame学习](https://github.com/yueyuanyang/spark/blob/master/graph/part11.md)
+11. [spark graph 操作10 —— GraphFrame学习(类Sql第三方库)](https://github.com/yueyuanyang/spark/blob/master/graph/part11.md)
