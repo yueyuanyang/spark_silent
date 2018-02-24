@@ -123,6 +123,8 @@ ShippableVertexPartition会合并相同重复点的属性attr对象，补全缺�
 
 关键是：根据vertexId生成map:GraphXPrimitiveKeyOpenHashMap，这个map跟边中的global2local是不是很相似？这个map根据long vertxId生成下标索引，目测：相同的点会有相同的下标。// todo..
 #### 1.4 第三步 生成Graph对象［finished］
+![graph](https://github.com/yueyuanyang/spark/blob/master/graph/doc/graphx_build_graph.jpg)
+
 把上述edgeRDD和vertexRDD拿过来组成Graph
 ```
 new GraphImpl(vertices, new ReplicatedVertexView(edges.asInstanceOf[EdgeRDDImpl[ED, VD]]))
@@ -157,10 +159,74 @@ private def sendMsg(ctx: EdgeContext[KCoreVertex, Int, Map[Int, Int]]): Unit = {
       }
 ```
 mergeMsg：合并消息函数。用于Map阶段，每个edge分区中每个点收到的消息合并，以及reduce阶段，合并不同分区的消息。合并vertexId相同的消息
+
 tripletFields：定义发消息的方向
 
+### 2.1.1 aggregateMessages Map阶段
+![graph map](https://github.com/yueyuanyang/spark/blob/master/graph/doc/graphx_aggmsg_map.jpg)
+
+从入口函数进入aggregateMessagesWithActiveSet，首先使用VertexRDD[VD]更新replicatedVertexView, 只更新其中vertexRDD中attr对象。
+
+问：为啥更新replicatedVertexView？ 答：replicatedVertexView就是个点和边的视图，点的属性有变化，要更新边中包含的点的attr
+
+replicatedVertexView这里对edgeRDD做mapPartitions操作，所有的操作都在每个边分区的迭代中完成。
+
+1. 进入aggregateMessagesEdgeScan
+
+前文中提到edge partition中包含的五个重要数据结构之一：localSrcIds, 顶点vertixId在当前分区中的索引.
+
+1) 遍历localSrcIds, 根据其下标去localSrcIds中拿到srcId在全局local2global中的索引位，然后拿到srcId； 同理，根据下标，去localDstIds中取到local2global中的索引位, 取出dstId
+有了srcId和dstId，你就可以blabla....
+
+问： 为啥用localSrcIds的下标
+答： 用localDstIds的也可以。一条边必然包含两个点:srcId, dstId
+
+2) 发消息
+
+看上图:
+
+根据接口中定义的tripletFields，拿到发消息的方向: 1) 向dstId发；2) 向srcId发；3) 向两边发；4) 向其中一边发
+发消息的过程就是遍历到一条边，向以srcId/dstId在本分区内的本地IDlocalId为下标的数组中添加数据，如果localId为下标数组中已经存在数据，则执行合并函数mergeMsg
+每个点之间在发消息的时候是独立的，即：点单纯根据方向，向以相邻点的localId为下标的数组中插数据，互相独立，在并行上互不影响。 完事，返回消息RDDmessages: RDD[(VertexId, VD2)]
+### 2.1.2 aggregateMessages Reduce阶段
+![reduce](https://github.com/yueyuanyang/spark/blob/master/graph/doc/graphx_aggmsg_reduce.jpg)
 
 
+因为对边上，对点发消息，所以在reduce阶段主要是VertexRDD的菜。
+
+入口(Graphmpl 260行)： vertices.aggregateUsingIndex(preAgg, mergeMsg)
+
+收到messages: RDD[(VertexId, VD2)]消息RDD，开始：
+
+1. 对messages做shuffled分区，分区器使用VertexRDD的partitioner。
+
+因为VertexRDD的partitioner根据点VertexID做分区，所以vertexId->消息分区后的pid根VertextRDD完全相同，这样用zipPartitions高效的合并两个分区的数据
+
+2. 根据对等合并attr, 聚合函数使用API传入的mergeMsg函数
+
+**小技巧：遍历节点时，遍历messagePartition。并不是每个节点都会收到消息，所以messagePartition集合最小，所以速度会快。遍历小集合取大集合的数据。
+前文提到根据routingTables路由表生成VertexRDD的vertexPartitions时, vertexPartitions中重新封装了ShippableVertexPartition对象，其定义为：**
+```
+ShippableVertexPartition[VD: ClassTag](
+val index: VertexIdToIndexMap,
+val values: Array[VD],
+val mask: BitSet,
+val routingTable: RoutingTablePartition)
+```
+最后生成对象： new ShippableVertexPartition(map.keySet, map._values, map.keySet.getBitSet, routingTable)
+
+所以这里用到的index就是map.keySet, map就是映射vertexId->attr
+
+index: map.keySet, hashSet, vertexId->下标
+
+values: map._valuers, Array[Int], 根据下标保存attr。
+
+so so，根据vetexId从index中取到其下标，再根据下标，从values中取到attr，存在attr就用API传入的函数mergeMsg合并属性attr; 不存在就直接赋值。
+
+最后得到的是收到消息的VertexRDD
+
+到这里，整个map/reduce过程就完成了。
+![golde](https://github.com/yueyuanyang/spark/blob/master/graph/doc/graphx_global.jpg)
 
 
 
