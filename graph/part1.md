@@ -10,3 +10,13 @@ def fromEdges[VD: ClassTag, ED: ClassTag](
       edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
       vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY): Graph[VD, ED]
 ```
+2.根据边的两个点元数据构建(Graph.fromEdgeTuples)
+```
+def fromEdgeTuples[VD: ClassTag](
+  rawEdges: RDD[(VertexId, VertexId)],
+  defaultValue: VD,
+  uniqueEdges: Option[PartitionStrategy] = None,
+  edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
+  vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY): Graph[VD, Int] =
+```
+#### 1.2 第一步：构建边EdgeRDD
