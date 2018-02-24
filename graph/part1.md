@@ -79,7 +79,11 @@ localSrcIds/localDstIds -> index -> local2global -> VertexId
 ＃	根据VertexId取本地下标，取属性
 VertexId -> global2local -> index -> data -> attr object
 ```
+### v1.3 第二步：构建顶点(VertexRDD)
+![vertexRDD](https://github.com/yueyuanyang/spark/blob/master/graph/doc/graphx_build_vertex.jpg)
+入口：GraphImpl365行。 val vertices = VertexRDD.fromEdges(edgesCached, edgesCached.partitions.size, defaultVertexAttr).withTargetStorageLevel(vertexStorageLevel)
 
+根据边EdgeRDD[ED, VD]构建出点VertexRDD, 点是孤岛，不像边一样保存点与点之间的关系。点只保存属性attr。所以需要对拿到的点做分区。
 
-
+为了能通过点找到边，每个点需要保存点所在到边信息即分区Id(pid)，这些新保存在路由表RoutingTablePartition中。
 
