@@ -20,3 +20,4 @@ def fromEdgeTuples[VD: ClassTag](
   vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY): Graph[VD, Int] =
 ```
 #### 1.2 第一步：构建边EdgeRDD
+![EdgeRDD](https://github.com/yueyuanyang/spark/blob/master/graph/doc/graphx_build_edge.jpg)
