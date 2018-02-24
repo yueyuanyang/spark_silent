@@ -87,3 +87,81 @@ VertexId -> global2local -> index -> data -> attr object
 
 为了能通过点找到边，每个点需要保存点所在到边信息即分区Id(pid)，这些新保存在路由表RoutingTablePartition中。
 
+**构建的过程：**
+
+1.创建路由表
+
+根据EdgeRDD，map其分区，对edge partition中的数据转换成RoutingTableMessage数据结构。
+
+特别激动的是: 为节省内存，把edgePartitionId和一个标志位通过一个32位的int表示。
+
+如图所示，RoutingTableMessage是自定义的类型类, 一个包含vid和int的tuple(VertexId, Int)。 int的32~31位表示一个标志位,01: isSrcId 10: isDstId。30～0位表示边分区ID。赞这种做法，目测作者是山西人。
+
+RoutingTableMessage想表达这样的信息：一个顶点ID，不管未来你到天涯海角，请带着你女朋友Edge的地址: edge分区ID。并且带着一个标志你在女友心中的位置是：01是左边isSrcId，10是右边isDstId。这样就算你流浪到非洲，也能找到小女友约会...blabla...
+
+2. 根据路由表生成分区对象vertexPartitions
+
+1) 上（1）中生成的消息路由表信息，重新分区，分区数目根edge分区数保持一致。
+
+2) 在新分区中，map分区中的每条数据，从RoutingTableMessage解出数据：vid, edge pid, isSrcId/isDstId。这个三个数据项重新封装到三个数据结构中:pid2vid,srcFlags,dstFlags
+
+3) 有意思的地方来了，想一下，shuffle以后新分区中的点来自于之前edge不同分区，那么一个点要找到边，就需要先确定边的分区号pid, 然后在确定的edge分区中确定是srcId还是dstId, 这样就找到了边。
+```
+val pid2vid = Array.fill(numEdgePartitions)(new PrimitiveVector[VertexId])
+val srcFlags = Array.fill(numEdgePartitions)(new PrimitiveVector[Boolean])
+val dstFlags = Array.fill(numEdgePartitions)(new PrimitiveVector[Boolean])
+```
+上面表达的是：当前vertex分区中点在edge分区中的分布。新分区中保存这样的记录(vids.trim().array, toBitSet(srcFlags(pid)), toBitSet(dstFlags(pid))) vid, srcFlag, dstFlag, flag通过BitSet存储，很省。
+
+如此就生成了vertex的路由表routingTables
+
+4) 生成ShippableVertexPartition
+
+根据上面routingTables, 重新封装路由表里的数据结构为：ShippableVertexPartition
+
+ShippableVertexPartition会合并相同重复点的属性attr对象，补全缺失的attr对象。
+
+关键是：根据vertexId生成map:GraphXPrimitiveKeyOpenHashMap，这个map跟边中的global2local是不是很相似？这个map根据long vertxId生成下标索引，目测：相同的点会有相同的下标。// todo..
+#### 1.4 第三步 生成Graph对象［finished］
+把上述edgeRDD和vertexRDD拿过来组成Graph
+```
+new GraphImpl(vertices, new ReplicatedVertexView(edges.asInstanceOf[EdgeRDDImpl[ED, VD]]))
+```
+3. 创建VertexRDDImpl对象
+new VertexRDDImpl(vertexPartitions)，这就完事了
+## 2. 常用函数分析
+**下面分析一下常用的graph函数aggregateMessages**
+### 2.1 aggregateMessages
+aggregateMessages是Graphx最重要的API，1.2版本添加的新函数，用于替换mapReduceTriplets。目前mapReduceTriplets最终也是使用兼容的aggregateMessages
+
+据说改用aggregateMessages后，性能提升30%。
+
+它主要功能是向邻边发消息，合并邻边收到的消息，返回messageRDD
+
+aggregateMessages的接口如下：
+```
+def aggregateMessages[A: ClassTag](
+      sendMsg: EdgeContext[VD, ED, A] => Unit,
+      mergeMsg: (A, A) => A,
+      tripletFields: TripletFields = TripletFields.All)
+    : VertexRDD[A] = {
+    aggregateMessagesWithActiveSet(sendMsg, mergeMsg, tripletFields, None)
+  }
+
+```
+sendMsg： 发消息函数
+```
+private def sendMsg(ctx: EdgeContext[KCoreVertex, Int, Map[Int, Int]]): Unit = {
+	ctx.sendToDst(Map(ctx.srcAttr.preKCore -> -1, ctx.srcAttr.curKCore -> 1))
+	ctx.sendToSrc(Map(ctx.dstAttr.preKCore -> -1, ctx.dstAttr.curKCore -> 1))
+      }
+```
+mergeMsg：合并消息函数。用于Map阶段，每个edge分区中每个点收到的消息合并，以及reduce阶段，合并不同分区的消息。合并vertexId相同的消息
+tripletFields：定义发消息的方向
+
+
+
+
+
+
+
