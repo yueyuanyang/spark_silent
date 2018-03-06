@@ -22,6 +22,11 @@ future生成后，程序会继续运行。若future的值可用，会自动callb
 
 Try[T]类似Option[T]，有所优化的是若success，内含T值，否则包含一个Throwable exception。所以基本相当于Either[Throwable, T]
 
+**可以用 onComplete { 
+    case Success() =>  
+    case Failure() =>                  
+}**
+
 ```
 val f: Future[List[String]] = Future {  
     session.getRecentPosts  
@@ -32,7 +37,7 @@ f onComplete {
 }
 ```
 
-也可以用onSuccess或是onFailure, 或者只提供一个:
+**也可以用onSuccess或是onFailure, 或者只提供一个:**
 
 ```
 val f: Future[List[String]] = Future {  
@@ -69,7 +74,6 @@ purchase onSuccess {
 也可以使用专为future定义的一些组合，例如recover(获取exception)， fallbackTo(某一个future异常后使用另一个future),
 
 andThen等。具体情况具体使用。
-
 
 
 
