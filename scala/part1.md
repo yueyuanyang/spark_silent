@@ -24,11 +24,11 @@ Try[T]类似Option[T]，有所优化的是若success，内含T值，否则包含
 
 ```
 val f: Future[List[String]] = Future {  
-session.getRecentPosts  
+    session.getRecentPosts  
 }  
 f onComplete {  
-case Success(posts) => for (post <- posts) println(post)  
-case Failure(t) => println("An error has occured: " + t.getMessage)  
+    case Success(posts) => for (post <- posts) println(post)  
+    case Failure(t) => println("An error has occured: " + t.getMessage)  
 }
 ```
 
@@ -46,7 +46,29 @@ f onSuccess {
 }  
 ```
 
+future类型的连锁：
 
+future可以直接当做变量使用在map, flatMap或是for中，生成的也是future， 并且在所有需要的future complete后，调用callback。
+
+```
+val usdQuote = Future { connection.getCurrentValue(USD) }  
+val chfQuote = Future { connection.getCurrentValue(CHF) }  
+val purchase = for {  
+    usd <- usdQuote  
+    chf <- chfQuote  
+    if isProfitable(usd, chf)  
+} yield connection.buy(amount, chf)  
+  
+purchase onSuccess {  
+    case _ => println("Purchased " + amount + " CHF")  
+}  
+```
+
+例中，purchase就是一个衍生的future， 当usdQuote和chfQuote准备好后，onSuccess才被调用。
+
+也可以使用专为future定义的一些组合，例如recover(获取exception)， fallbackTo(某一个future异常后使用另一个future),
+
+andThen等。具体情况具体使用。
 
 
 
