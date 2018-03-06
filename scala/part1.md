@@ -153,6 +153,40 @@ taxCutF.onComplete {
 
 ```
 
+### 实例2
+
+考虑下面的生产者 - 消费者的例子，其中一个计算产生一个值，并把它转移到另一个使用该值的计算。这个传递中的值通过一个promise来完成。
+
+```
+import scala.concurrent.{ future, promise }
+import scala.concurrent.ExecutionContext.Implicits.global
+
+val p = promise[T]
+val f = p.future
+
+val producer = future {
+  val r = produceSomething()
+  p success r
+  continueDoingSomethingUnrelated()
+}
+
+val consumer = future {
+  startDoingSomething()
+  f onSuccess {
+    case r => doSomethingWithResult()
+  }
+}
+
+
+```
+
+在这里，我们创建了一个promise并利用它的future方法获得由它实现的Future。然后，我们开始了两种异步计算。
+
+第一种做了某些计算，结果值存放在r中，通过执行promise p，这个值被用来完成future对象f。第二种做了某些计算，
+
+然后读取实现了future f的计算结果值r。需要注意的是，在生产者完成执行continueDoingSomethingUnrelated() 方法
+
+这个任务之前，消费者可以获得这个结果值。
 
 
 
