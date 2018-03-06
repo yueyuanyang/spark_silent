@@ -26,9 +26,11 @@ Try[T]类似Option[T]，有所优化的是若success，内含T值，否则包含
 
 import ExecutionContext.Implicits.global 如：导入默认的全局执行上下文
 
+**常用的是提供回调函数方法**
+
 **可以用 f onComplete {
-    case Success() =>  
-    case Failure() =>                  
+    case Success() => println  
+    case Failure() => println                 
 }**
 
 ```
