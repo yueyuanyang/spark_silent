@@ -34,7 +34,9 @@ import ExecutionContext.Implicits.global 如：导入默认的全局执行上下
 }**
 
 ```
-val f: Future[List[String]] = Future {  
+Future 编程范式(一)：第一种写法
+
+val f: Future[List[String]] = Future {
     session.getRecentPosts  
 }  
 f onComplete {  
@@ -46,6 +48,8 @@ f onComplete {
 **也可以用onSuccess或是onFailure, 或者只提供一个:**
 
 ```
+Future 编程范式(二)：第二种写法
+
 val f: Future[List[String]] = Future {  
    session.getRecentPosts  
 }  
@@ -80,6 +84,80 @@ purchase onSuccess {
 也可以使用专为future定义的一些组合，例如recover(获取exception)， fallbackTo(某一个future异常后使用另一个future),
 
 andThen等。具体情况具体使用。
+
+
+## Promise 
+
+Promise 允许你在 Future 里放入一个值，不过只能做一次，Future 一旦完成，就不能更改了。
+
+一个 Future 实例总是和一个（也只能是一个）Promise 实例关联在一起。如果你在 REPL 里调用 future 方法，你会发现返回的也是一个 Promise：
+
+### 给个实例
+### 给出承诺
+
+当我们谈论起承诺能否被兑现时，一个很熟知的例子是那些政客的竞选诺言。
+
+假设被推选的政客给他的投票者一个减税的承诺。这可以用 Promise[TaxCut] 表示：
+
+```
+import scala.concurrent.Promise
+case class TaxCut(reduction: Int)
+val taxcut = Promise[TaxCut]()
+val taxcut2: Promise[TaxCut] = Promise()
+```
+
+一旦创建了这个 Promise，就可以在它上面调用 future 方法来获取承诺的未来：
+
+```
+val taxCutF: Future[TaxCut] = taxcut.future
+```
+返回的 Future 可能并不和 Promise 一样，但在同一个 Promise 上调用 future 方法总是返回同一个对象,
+
+以确保 Promise 和 Future 之间一对一的关系。
+
+### 兑现承诺
+
+为了成功结束一个 Promise，你可以调用它的 success 方法，并传递一个大家期许的结果：
+
+```
+taxcut.success(TaxCut(20))
+```
+这样做之后，Promise 就无法再写入其他值了，如果偏要再写，会产生异常。
+
+### 完整例子
+
+```
+object Government {
+  def redeemCampaignPledge(): Future[TaxCut] = {
+    val p = Promise[TaxCut]()
+    Future {
+      println("Starting the new legislative period.")
+      Thread.sleep(2000)
+      p.success(TaxCut(20))  -- 承诺诺言
+      // p.failure(LameExcuse("global economy crisis")) -- 违背诺言
+      println("We reduced the taxes! You must reelect us!!!!1111")
+    }
+    p.future
+  }
+}
+
+import scala.util.{Success, Failure}
+val taxCutF: Future[TaxCut] = Government.redeemCampaignPledge()
+println("Now that they're elected, let's see if they remember their promises...")
+taxCutF.onComplete {
+  case Success(TaxCut(reduction)) =>
+    println(s"A miracle! They really cut our taxes by $reduction percentage points!")
+  case Failure(ex) =>
+    println(s"They broke their promises! Again! Because of a ${ex.getMessage}")
+}
+
+```
+
+
+
+
+
+
 
 
 
