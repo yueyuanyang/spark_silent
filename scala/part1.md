@@ -11,7 +11,9 @@ val f: Future[List[Friend]] = Future {
 session.getFriends()  
 }
 
-session.getFriends()可能耗时长久，所以返回一个future的List[Friend]，这样其余的代码可以继续运行。
+session.getFriends()
+
+可能耗时长久，所以返回一个future的List[Friend]，这样其余的代码可以继续运行。
 ```
 
 future生成后，程序会继续运行。若future的值可用，会自动callback onComplete方法， 或是更具体的调用onSuccess或onFailure方法。
