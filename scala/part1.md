@@ -46,7 +46,7 @@ f onSuccess {
 }  
 ```
 
-future类型的连锁：
+** future类型的连锁：**
 
 future可以直接当做变量使用在map, flatMap或是for中，生成的也是future， 并且在所有需要的future complete后，调用callback。
 
