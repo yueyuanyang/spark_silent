@@ -24,6 +24,8 @@ future生成后，程序会继续运行。若future的值可用，会自动callb
 
 Try[T]类似Option[T]，有所优化的是若success，内含T值，否则包含一个Throwable exception。所以基本相当于Either[Throwable, T]
 
+import ExecutionContext.Implicits.global 如：导入默认的全局执行上下文
+
 **可以用 f onComplete {
     case Success() =>  
     case Failure() =>                  
