@@ -91,8 +91,9 @@ UserDefineLibrary.removeWord("ansj中文分词");
 terms = ToAnalysis.parse("我觉得ansj中文分词是一个不错的系统!我是王婆!");
 System.out.println("删除用户自定义词典例子:" + terms);
 result:
-增加新词例子:我/r,觉/v,得/ud,ansj中文分词/userDefine,是/v,一/m,个/q,不/d,错/n,的/uj,系/v,统/v,!,我/r,是/v,王婆/nr,!
-删除用户自定义词典例子:我/r,觉/v,得/ud,ansj/en,中文/nz,分/q,词/n,是/v,一/m,个/q,不/d,错/n,的/uj,系/v,统/v,!,我/r,是/v,王婆/nr,!
+增加新词例子:我/r,觉/v,得/ud,ansj中文分词/userDefine,是/v,一/m,个/q,不/d,错/n,的/uj,
+系/v,统/v,!,我/r,是/v,王婆/nr,!删除用户自定义词典例子:我/r,觉/v,得/ud,ansj/en,中文/nz
+,分/q,词/n,是/v,一/m,个/q,不/d,错/n,的/uj,系/v,统/v,!,我/r,是/v,王婆/nr,!
 ```
 
 
