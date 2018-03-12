@@ -11,7 +11,7 @@
 
 可以应用到自然语言处理等方面,适用于对分词效果要求高的各种项目.
 
-**下载jar：
+** 下载jar：
 
 访问 http://maven.nlpcn.org/org/ansj/ 最好下载最新版 ansj_seg/
 
