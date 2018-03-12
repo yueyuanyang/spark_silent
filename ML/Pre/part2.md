@@ -34,10 +34,10 @@
 
 **API 使用详解**
 
-### 单个添加词典
+#### 基本分词
 ```
-
-
-
+val parse = BaseAnalysis.parse("孙杨在里约奥运会男子200米自由泳决赛中，以1分44秒65夺得冠军");
+System.out.println(parse);
+result：[孙/nr,杨/nr,在/p,里/f,约/d,奥运会/j,男子/n,200/m,米/q,自由泳/n,决赛/vn,中/f,，/w,以/p,1/m,分/q,44/m,秒/q,65/m,夺得/v,冠军/n]
 ```
 
