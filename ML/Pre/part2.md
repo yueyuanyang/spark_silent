@@ -32,6 +32,7 @@
 - nlp分词：语法实体名抽取.未登录词整理.只要是对文本进行发现分析等工作(api : NlpAnalysis.parse() )
 - 面向索引分词：故名思议就是适合在lucene等文本检索中用到的分词。( api :  IndexAnalysis.parse() )
 
+**API 使用详解**
 
 ### 单个添加词典
 ```
