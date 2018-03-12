@@ -38,6 +38,62 @@
 ```
 val parse = BaseAnalysis.parse("孙杨在里约奥运会男子200米自由泳决赛中，以1分44秒65夺得冠军");
 System.out.println(parse);
-result：[孙/nr,杨/nr,在/p,里/f,约/d,奥运会/j,男子/n,200/m,米/q,自由泳/n,决赛/vn,中/f,，/w,以/p,1/m,分/q,44/m,秒/q,65/m,夺得/v,冠军/n]
+result：[孙/nr,杨/nr,在/p,里/f,约/d,奥运会/j,男子/n,200/m,
+米/q,自由泳/n,决赛/vn,中/f,，/w,以/p,1/m,分/q,44/m,秒/q,65/m,夺得/v,冠军/n]
+
 ```
+#### 精准分词
+```
+val parse = ToAnalysis.parse("孙杨在里约奥运会男子200米自由泳决赛中，以1分44秒65夺得冠军");
+System.out.println(parse);
+result:[孙杨/nr,在/p,里/f,约/d,奥运会/j,男子/n,200米/m,自由泳/n,决赛/vn,中/f,
+，/w,以/p,1分/m,44秒/m,65/m,夺得/v,冠军/n]
+
+```
+#### nlp分词
+```
+val parse = NlpAnalysis.parse("孙杨在里约奥运会男子200米自由泳决赛中，以1分44秒65夺得冠军");
+System.out.println(parse);
+result:[孙杨/nr,在/p,里约,奥运会/j,男子/n,200米/m,自由泳/n,决赛/vn,中/f,，/w,以/p,1分/m,44秒/m,65/m,夺得/v,冠军/n]
+```
+#### 面向索引分词
+```
+var parse =  IndexAnalysis.parse("主副食品")
+result：[主副食品/n]
+```
+#### 加载自定义词典
+```
+val forest0 = Library.makeForest("E:/base.dic")
+System.out.println(DicAnalysis.parse("孙杨在里约奥运会男子200米自由泳决赛中，以1分44秒65夺得冠军", forest0));
+result:[孙杨/nr,在/p,里约/ns,奥运会男子200米自由泳/comb,决赛/vn,中/f,，/w,以/p,1分/m,44秒/m,65/m,夺得/v,冠军/n]
+“奥运会男子200米自由泳”是加到词典中的
+```
+
+#### 去停用词
+```
+ var stopWord: Seq[String] = Seq("决赛")
+    var filter = new FilterRecognition()
+    filter.insertStopNatures("ns")
+    filter.insertStopWords(stopWord)
+    var word = "孙杨在里约奥运会男子200米自由泳决赛中，以1分44秒65夺得冠军"
+    var result = DicAnalysis.parse(word).recognition(filter)
+result：[孙杨/nr,在/p,里/f,约/d,奥运会/j,200米/m,中/f,，/w,以/p,1分/m,44秒/m,65/m,夺得/v]
+去除了n词性“自由泳”，和停用词“决赛”，停用词可以是一个String，也可以是一个java List对象
+```
+
+#### 动态添加词典
+```
+UserDefineLibrary.insertWord("ansj中文分词", "userDefine", 1000);
+var terms = ToAnalysis.parse("我觉得Ansj中文分词是一个不错的系统!我是王婆!");
+System.out.println("增加新词例子:" + terms);
+// 删除词语,只能删除.用户自定义的词典.
+UserDefineLibrary.removeWord("ansj中文分词");
+terms = ToAnalysis.parse("我觉得ansj中文分词是一个不错的系统!我是王婆!");
+System.out.println("删除用户自定义词典例子:" + terms);
+result:
+增加新词例子:我/r,觉/v,得/ud,ansj中文分词/userDefine,是/v,一/m,个/q,不/d,错/n,的/uj,系/v,统/v,!,我/r,是/v,王婆/nr,!
+删除用户自定义词典例子:我/r,觉/v,得/ud,ansj/en,中文/nz,分/q,词/n,是/v,一/m,个/q,不/d,错/n,的/uj,系/v,统/v,!,我/r,是/v,王婆/nr,!
+```
+
+
 
