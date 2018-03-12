@@ -126,12 +126,17 @@ result:
 汉语文本词性标注标记集
 
 1. 名词  (1个一类，7个二类，5个三类)
+
 名词分为以下子类：
-Name | Academy | score 
-- | :-: | -: 
-Harry Potter | Gryffindor| 90 
-Hermione Granger | Gryffindor | 100 
-Draco Malfoy | Slytherin | 90
+
+| 水果        | 价格    |  数量  |
+| --------   | -----:   | :----: |
+| 香蕉        | $1      |   5    |
+| 苹果        | $1      |   6    |
+| 草莓        | $1      |   7    |
+
+
+
 
 
 
