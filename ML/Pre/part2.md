@@ -96,5 +96,43 @@ result:
 ,分/q,词/n,是/v,一/m,个/q,不/d,错/n,的/uj,系/v,统/v,!,我/r,是/v,王婆/nr,!
 ```
 
+#### UserDefineLibrary API操作
+```
+/**添加单个词典***/
+    UserDefineLibrary.insertWord("艾泽拉斯","n",10)
+    //基础分词
+    val parse5 = BaseAnalysis.parse("我在艾泽拉斯") // 基础分词不支持用户自定义词典，所以不发生改变
+    //精准分词
+    val parse6 = ToAnalysis.parse("我在艾泽拉斯")
+    //NLP分词
+    val parse7 = NlpAnalysis.parse("我在艾泽拉斯")
+    /***单个移除词典**/
+    UserDefineLibrary.removeWord("艾泽拉斯")
+    val parse8 = ToAnalysis.parse("我在艾泽拉斯")
+
+    /*****加载自定义词库*/
+    /**
+      * 词库格式（"自动义词"[tab]键"词性"[tab]键"词频"）
+      * 第一个参数直接默认为 :UserDefineLibrary.FOREST
+      * 第二个参数词库路径 address2.dic 格式
+      */
+    UserDefineLibrary.loadLibrary(UserDefineLibrary.FOREST,"")
+    ToAnalysis.parse("我在艾泽拉斯至高岭雷霆图腾")
+    
+```
+
+**附：词性说明**
+
+汉语文本词性标注标记集
+
+1. 名词  (1个一类，7个二类，5个三类)
+名词分为以下子类：
+Name | Academy | score 
+- | :-: | -: 
+Harry Potter | Gryffindor| 90 
+Hermione Granger | Gryffindor | 100 
+Draco Malfoy | Slytherin | 90
+
+
 
 
