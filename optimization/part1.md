@@ -15,5 +15,6 @@
 
 (3) 在整个HDFS上实现完整写入
 
-- number od executor per node - 
+- number od executor per node -  cores per mode / 5 * (1-0.9)
+
 
