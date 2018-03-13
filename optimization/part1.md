@@ -17,4 +17,18 @@
 
 - number of executor per node -  cores per mode / 5 * (1-0.9) (每个节点的核心数 % 5 * (1 - 0.9))
 
+$ 查看逻辑CPU的个数
 
+[root@AAA ~]# cat /proc/cpuinfo| grep "processor"| wc -l
+
+#### 资源分配 - Memory
+
+- spark.executor.memory - memory size per executor (每个executor的内存大小)
+
+(1) 至少留下10-15% 给系统缓存：,page cache etc
+
+(2) 每个节点总内存*(85-90)% / 每个节点的executor数量
+
+(3)  每个核心2-5 G：2-5GB : 2-5 * sparkk.executor.cores
+
+- spark.yarn.executor.memoryOverhead -
