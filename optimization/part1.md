@@ -27,8 +27,8 @@ $ 查看逻辑CPU的个数
 
 (1) 至少留下10-15% 给系统缓存：,page cache etc
 
-(2) 每个节点总内存*(85-90)% / 每个节点的executor数量
+(2) 每个节点(总内存*(85-90)%) / 每个节点的executor数量
 
-(3)  每个核心2-5 G：2-5GB : 2-5 * sparkk.executor.cores
+(3) 每个核心2-5 G：2-5GB : 2-5 * sparkk.executor.cores
 
 - spark.yarn.executor.memoryOverhead -
