@@ -31,4 +31,10 @@ $ 查看逻辑CPU的个数
 
 (3) 每个核心2-5 G：2-5GB : 2-5GB * spark.executor.cores
 
-- spark.yarn.executor.memoryOverhead -
+- spark.yarn.executor.memoryOverhead -  indicte for offhead memory size,increasing that to avoid killing by tarn NM
+(指出额外的内存大小，增加以避免通过tarn NM杀死)
+
+(1)有时候默认的值(384,0.7 * sparkexecutor.memory)太小,netty可能会大量使用它们
+
+(2) yarn.noemanager.resource.memory-mb=spark.yarn.executor.memoryOerhead + spark.executor.memory
+
