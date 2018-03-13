@@ -38,3 +38,6 @@ $ 查看逻辑CPU的个数
 
 (2) yarn.noemanager.resource.memory-mb=spark.yarn.executor.memoryOerhead + spark.executor.memory
 
+## 软件调整 - 序列化
+
+
