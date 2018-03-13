@@ -29,6 +29,6 @@ $ 查看逻辑CPU的个数
 
 (2) 每个节点(总内存*(85-90)%) / 每个节点的executor数量
 
-(3) 每个核心2-5 G：2-5GB : 2-5 * spark.executor.cores
+(3) 每个核心2-5 G：2-5GB : 2-5GB * spark.executor.cores
 
 - spark.yarn.executor.memoryOverhead -
