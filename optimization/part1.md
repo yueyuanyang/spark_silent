@@ -39,5 +39,29 @@ $ 查看逻辑CPU的个数
 (2) yarn.noemanager.resource.memory-mb=spark.yarn.executor.memoryOerhead + spark.executor.memory
 
 ## 软件调整 - 序列化
+- spark.serializer - 类使用序列化对象
+
+(1) 为提高速度，序列化是必须的，它能带来15-20%的提高
+```
+KryoSerialization速度快，可以配置为任何org.apache.spark.serializer的子类。
+但Kryo也不支持所有实现了 java.io.Serializable 接口的类型，它需要你在程序中 register 需要序列化的类型，以得到最佳性能
+
+在 SparkConf 初始化的时候调用 conf.set(“spark.serializer”, “org.apache.spark.serializer.KryoSerializer”) 使用 Kryo。这个设置不仅控制各个worker节点之间的混洗数据序列化格式，同时还控制RDD存到磁盘上的序列化格式。需要在使用时注册需要序列化的类型，建议在对网络敏感的应用场景下使用Kryo。
+
+如果你的自定义类型需要使用Kryo序列化，可以用 registerKryoClasses 方法先注册：
+
+val conf = new SparkConf.setMaster(...).setAppName(...)
+
+conf.registerKryoClasses(Array(classOf[MyClass1], classOf[MyClass2]))
+
+val sc = new SparkContext(conf)
+
+最后，如果你不注册需要序列化的自定义类型，Kryo也能工作，不过每一个对象实例的序列化结果都会包含一份完整的类名，这有点浪费空间。
+ 
+
+
+
+```
+
 
 
