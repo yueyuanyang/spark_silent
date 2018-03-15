@@ -108,7 +108,7 @@ persist()方法表示：手动选择持久化级别，并使用指定的方式�
 #### 对于persist()方法而言，我们可以根据不同的业务场景选择不同的持久化级别。
 
 | 持久化级别 | 	含义解释 |
-| - | :-: | -: |
+| - | :-: |
 | Harry Potter | Gryffindor |
 | Draco Malfoy | Slytherin  |
 
