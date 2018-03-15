@@ -107,11 +107,11 @@ persist()方法表示：手动选择持久化级别，并使用指定的方式�
 
 #### 对于persist()方法而言，我们可以根据不同的业务场景选择不同的持久化级别。
 
-Name | Academy | score 
-- | :-: | -: 
-Harry Potter | Gryffindor| 90 
-Hermione Granger | Gryffindor | 100 
-Draco Malfoy | Slytherin | 90
+| Name | Academy | score 
+| - | :-: | -: 
+| Harry Potter | Gryffindor| 90 
+| Hermione Granger | Gryffindor | 100 
+| Draco Malfoy | Slytherin | 90
 
 
 
