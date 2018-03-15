@@ -65,6 +65,15 @@ val sc = new SparkContext(conf)
 不过每一个对象实例的序列化结果都会包含一份完整的类名，这有点浪费空间。
  
 ```
+-  spark.kryo.referenceTracking - disabling to avoid java performance bug
+ 禁用以避免Java性能错误
+
+kryo序列化程序有一种机制，通过保留先前看到的对象的缓存来减少记录中的重复信息。
+
+因为JDK identityHashCode的性能问题不佳，所以缓存可能会非常昂贵
+
+### 软件调整 - Partiton （分区）
+
 
 
 
