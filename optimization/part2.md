@@ -40,9 +40,8 @@ RDD了，从而导致对于同一份数据，创建了多个RDD。这就意味�
 
 #### 一个简单的例子
 
-> 需要对名为“hello.txt”的HDFS文件进行一次map操作，再进行一次reduce操作。也就是说，需要对一份数据执行两次算子操作
+**需要对名为“hello.txt”的HDFS文件进行一次map操作，再进行一次reduce操作。也就是说，需要对一份数据执行两次算子操作**
 
-```
- 错误的做法：对于同一份数据执行多次算子操作时，创建多个RDD。 // 这里执行了两次textFile方法，针对同一个HDFS文件，创建了两个RDD出来，然后分别对每个RDD都执行了一个算子操作。 // 这种情况下，Spark需要从HDFS上两次加载hello.txt文件的内容，并创建两个单独的RDD；第二次加载HDFS文件以及创建RDD的性能开销，很明显是白白浪费掉的。 val rdd1 = sc.textFile("hdfs://192.168.0.1:9000/hello.txt") rdd1.map(...) val rdd2 = sc.textFile("hdfs://192.168.0.1:9000/hello.txt") rdd2.reduce(...) // 正确的用法：对于一份数据执行多次算子操作时，只使用一个RDD。
-```
+**错误的做法：** 对于同一份数据执行多次算子操作时，创建多个RDD。 // 这里执行了两次textFile方法，针对同一个HDFS文件，创建了两个RDD出来，然后分别对每个RDD都执行了一个算子操作。 // 这种情况下，Spark需要从HDFS上两次加载hello.txt文件的内容，并创建两个单独的RDD；第二次加载HDFS文件以及创建RDD的性能开销，很明显是白白浪费掉的。 val rdd1 = sc.textFile("hdfs://192.168.0.1:9000/hello.txt") rdd1.map(...) val rdd2 = sc.textFile("hdfs://192.168.0.1:9000/hello.txt") rdd2.reduce(...) // 正确的用法：对于一份数据执行多次算子操作时，只使用一个RDD。
+
 
