@@ -11,6 +11,8 @@
 4. [Spark RDD行动Action操作(4) - saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 
 5. [Spark RDD行动Transformation操作(1) - map、flatMap、distinct、coalesce、repartition](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part5.md)
+6. [Spark RDD行动Transformation操作(1) -  randomSplit、glom、union、intersection、subtract](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part6.md)
+7. [Spark RDD行动Transformation操作(1) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
 
 # 第二部分 
 ## spark graph
