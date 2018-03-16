@@ -45,10 +45,12 @@ def makeRDD[T](seq: Seq[(T, Seq[String])])(implicit arg0: ClassTag[T]): RDD[T]
 scala> var collect = Seq((1 to 10,Seq("slave007.lxw1234.com","slave002.lxw1234.com")),
 (11 to 15,Seq("slave013.lxw1234.com","slave015.lxw1234.com")))
 collect: Seq[(scala.collection.immutable.Range.Inclusive, Seq[String])] = List((Range(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-List(slave007.lxw1234.com, slave002.lxw1234.com)), (Range(11, 12, 13, 14, 15),List(slave013.lxw1234.com, slave015.lxw1234.com)))
+List(slave007.lxw1234.com, slave002.lxw1234.com)), (Range(11, 12, 13, 14, 15),
+List(slave013.lxw1234.com, slave015.lxw1234.com)))
  
 scala> var rdd = sc.makeRDD(collect)
-rdd: org.apache.spark.rdd.RDD[scala.collection.immutable.Range.Inclusive] = ParallelCollectionRDD[6] at makeRDD at :23
+rdd: org.apache.spark.rdd.RDD[scala.collection.immutable.Range.Inclusive] 
+= ParallelCollectionRDD[6] at makeRDD at :23
  
 scala> rdd.partitions.size
 res33: Int = 2
