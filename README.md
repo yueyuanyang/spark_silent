@@ -12,12 +12,21 @@
 4. [Spark RDD行动Action操作(4) - saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 
 ### Transformation操作
-5. [Spark RDD行动Transformation操作(1) - map、flatMap、distinct、coalesce、repartition](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part5.md)
-6. [Spark RDD行动Transformation操作(2) -  randomSplit、glom、union、intersection、subtract](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part6.md)
-7. [Spark RDD行动Transformation操作(3) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
-8. [Spark RDD行动Transformation操作(4) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
-9. [Spark RDD行动Transformation操作(5) - zip、zipPartitions、zipWithIndex、zipWithUniqueId](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part8.md)
-10. [Spark RDD行动Transformation操作(6) - parallelize、makeRDD](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part9.md)
+1. [Spark RDD行动Transformation操作(1) - map、flatMap、distinct、coalesce、repartition](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part5.md)
+2. [Spark RDD行动Transformation操作(2) -  randomSplit、glom、union、intersection、subtract](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part6.md)
+3. [Spark RDD行动Transformation操作(3) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
+4. [Spark RDD行动Transformation操作(4) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
+5. [Spark RDD行动Transformation操作(5) - zip、zipPartitions、zipWithIndex、zipWithUniqueId](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part8.md)
+6. [Spark RDD行动Transformation操作(6) - parallelize、makeRDD](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part9.md)
+
+### 键值转换
+
+1. [Spark RDD行动键值操作(1) - partitionBy、mapValues、flatMapValues](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part10.md)
+2. [Spark RDD行动键值操作(1) - combineByKey、foldByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part11.md)
+3. [Spark RDD行动键值操作(1) - groupByKey、reduceByKey、reduceByKeyLocally](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part12.md)
+4. [Spark RDD行动键值操作(1) - cogroup、join](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part13.md)
+5. [Spark RDD行动键值操作(1) - leftOuterJoin、rightOuterJoin、subtractByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part14.md)
+
 
 # 第二部分 
 ## spark graph
