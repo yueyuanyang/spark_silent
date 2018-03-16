@@ -5,9 +5,9 @@
 1.[spark杂记之一 —— 如何设置spark日志的打印级别](https://github.com/yueyuanyang/spark/blob/master/notes/part1.md)
 # 第二部分 
 ## spark-core
-[Spark常用函数讲解之Action操作]()
-[Spark常用函数讲解之RDD基本转换]()
-[Spark常用函数讲解之键-值RDD转换]()
+[Spark常用函数讲解之Action操作](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part1.md)
+[Spark常用函数讲解之RDD基本转换](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part2.md)
+[Spark常用函数讲解之键-值RDD转换](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 # 第二部分 
 ## spark graph
 1. [spark graph 构建graph和聚合消息](https://github.com/yueyuanyang/spark/blob/master/graph/part1.md)
