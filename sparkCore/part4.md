@@ -19,7 +19,8 @@ import org.apache.hadoop.io.Text
 import org.apache.hadoop.io.IntWritable
  
 var rdd1 = sc.makeRDD(Array(("A",2),("A",1),("B",6),("B",3),("B",7)))
-rdd1.saveAsNewAPIHadoopFile("/tmp/lxw1234/",classOf[Text],classOf[IntWritable],classOf[TextOutputFormat[Text,IntWritable]])
+rdd1.saveAsNewAPIHadoopFile("/tmp/lxw1234/",classOf[Text],
+classOf[IntWritable],classOf[TextOutputFormat[Text,IntWritable]])
 ```
 
 ### saveAsNewAPIHadoopDataset
