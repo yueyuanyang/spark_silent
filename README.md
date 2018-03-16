@@ -7,7 +7,10 @@
 ## spark-core
 1. [Spark RDD行动Action操作(1) – first、count、reduce、collect、take、top、takeOrdered](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part1.md)
 2. [Spark RDD行动Action操作(2) - aggregate、fold、lookup、countByKey、foreach、foreachPartition、sortBy](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part2.md)
-3. [Spark常用函数讲解之键-值RDD转换](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
+3. [Spark RDD行动Action操作(3) - saveAsNewAPIHadoopFile、saveAsNewAPIHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part4.md)
+4. [Spark RDD行动Action操作(4) - saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
+
+. [Spark常用函数讲解之键-值RDD转换](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 # 第二部分 
 ## spark graph
 1. [spark graph 构建graph和聚合消息](https://github.com/yueyuanyang/spark/blob/master/graph/part1.md)
