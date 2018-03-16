@@ -10,7 +10,8 @@
 3. [Spark RDD行动Action操作(3) - saveAsNewAPIHadoopFile、saveAsNewAPIHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part4.md)
 4. [Spark RDD行动Action操作(4) - saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 
-. [Spark常用函数讲解之键-值RDD转换](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
+5. [Spark RDD行动Transformation操作(1) - map、flatMap、distinct、coalesce、repartition](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part5.md)
+
 # 第二部分 
 ## spark graph
 1. [spark graph 构建graph和聚合消息](https://github.com/yueyuanyang/spark/blob/master/graph/part1.md)
