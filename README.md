@@ -6,7 +6,7 @@
 # 第二部分 
 ## spark-core
 1. [Spark RDD行动Action操作(1)–first、count、reduce、collect、take、top、takeOrdered](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part1.md)
-2. [Spark RDD行动Action操作(2)aggregate、fold、lookup](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part2.md)
+2. [Spark RDD行动Action操作(2)aggregate、fold、lookup、countByKey、foreach、foreachPartition、sortBy](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part2.md)
 3. [Spark常用函数讲解之键-值RDD转换](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 # 第二部分 
 ## spark graph
