@@ -1,4 +1,4 @@
-## Spark算子：RDD行动Action操作(5)–saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset、saveAsNewAPIHadoopFile、saveAsNewAPIHadoopDataset
+## Spark算子：RDD行动Action操作(5)–saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset
 
 ### saveAsTextFile
 
