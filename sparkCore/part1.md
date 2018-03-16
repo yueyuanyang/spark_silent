@@ -2,9 +2,8 @@
 
 **spark Action 算子**
 
-**RDD行动Action操作(1) – first、count、reduce、collect**
-
-**first**
+**RDD行动Action操作(1) – first、count、reduce、collect、take、top、takeOrdered**
+### first
 
 def first(): T
 
@@ -25,7 +24,7 @@ res8: Int = 10
 
 ```
 
-**count**
+### count
 
 def count(): Long
 
@@ -39,7 +38,7 @@ scala> rdd1.count
 res15: Long = 3
 ```
 
-**reduce**
+### reduce
 
 def reduce(f: (T, T) ⇒ T): T
 
@@ -61,7 +60,7 @@ scala> rdd2.reduce((x,y) => {
 res21: (String, Int) = (CBBAA,6)
 ```
 
-**collect**
+### collect
 
 def collect(): Array[T]
 
@@ -73,6 +72,74 @@ rdd1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[36] at makeRDD at :2
  
 scala> rdd1.collect
 res23: Array[Int] = Array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+```
+
+### take
+
+def take(num: Int): Array[T]
+
+take用于获取RDD中从0到num-1下标的元素，不排序。
+
+```
+scala> var rdd1 = sc.makeRDD(Seq(10, 4, 2, 12, 3))
+rdd1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[40] at makeRDD at :21
+ 
+scala> rdd1.take(1)
+res0: Array[Int] = Array(10)                                                    
+ 
+scala> rdd1.take(2)
+res1: Array[Int] = Array(10, 4)
+```
+
+### top
+
+def top(num: Int)(implicit ord: Ordering[T]): Array[T]
+
+top函数用于从RDD中，按照默认（降序）或者指定的排序规则，返回前num个元素。
+
+```
+scala> var rdd1 = sc.makeRDD(Seq(10, 4, 2, 12, 3))
+rdd1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[40] at makeRDD at :21
+ 
+scala> rdd1.top(1)
+res2: Array[Int] = Array(12)
+ 
+scala> rdd1.top(2)
+res3: Array[Int] = Array(12, 10)
+ 
+//指定排序规则
+scala> implicit val myOrd = implicitly[Ordering[Int]].reverse
+myOrd: scala.math.Ordering[Int] = scala.math.Ordering$$anon$4@767499ef
+ 
+scala> rdd1.top(1)
+res4: Array[Int] = Array(2)
+ 
+scala> rdd1.top(2)
+res5: Array[Int] = Array(2, 3)
+
+```
+
+### takeOrdered
+
+def takeOrdered(num: Int)(implicit ord: Ordering[T]): Array[T]
+
+takeOrdered和top类似，只不过以和top相反的顺序返回元素。
+
+```
+scala> var rdd1 = sc.makeRDD(Seq(10, 4, 2, 12, 3))
+rdd1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[40] at makeRDD at :21
+ 
+scala> rdd1.top(1)
+res4: Array[Int] = Array(2)
+ 
+scala> rdd1.top(2)
+res5: Array[Int] = Array(2, 3)
+ 
+scala> rdd1.takeOrdered(1)
+res6: Array[Int] = Array(12)
+ 
+scala> rdd1.takeOrdered(2)
+res7: Array[Int] = Array(12, 10)
 ```
 
 
