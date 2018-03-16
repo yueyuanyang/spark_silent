@@ -1,4 +1,4 @@
-## Spark算子：RDD基本转换操作(3)–randomSplit、glom
+## Spark算子：RDD基本转换操作(3) – randomSplit、glom、union、intersection、subtract
 
 ### randomSplit
 
@@ -58,4 +58,95 @@ scala> rdd.glom().collect
 res35: Array[Array[Int]] = Array(Array(1, 2, 3), Array(4, 5, 6), Array(7, 8, 9, 10))
 //glom将每个分区中的元素放到一个数组中，这样，结果就变成了3个数组
 ```
+
+### union
+
+def union(other: RDD[T]): RDD[T]
+
+该函数比较简单，就是将两个RDD进行合并，不去重。
+
+ ```
+ scala> var rdd1 = sc.makeRDD(1 to 2,1)
+rdd1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[45] at makeRDD at :21
+ 
+scala> rdd1.collect
+res42: Array[Int] = Array(1, 2)
+ 
+scala> var rdd2 = sc.makeRDD(2 to 3,1)
+rdd2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[46] at makeRDD at :21
+ 
+scala> rdd2.collect
+res43: Array[Int] = Array(2, 3)
+ 
+scala> rdd1.union(rdd2).collect
+res44: Array[Int] = Array(1, 2, 2, 3)
+ ```
+
+### intersection
+
+def intersection(other: RDD[T]): RDD[T]
+def intersection(other: RDD[T], numPartitions: Int): RDD[T]
+def intersection(other: RDD[T], partitioner: Partitioner)(implicit ord: Ordering[T] = null): RDD[T]
+
+该函数返回两个RDD的交集，并且去重。
+- 参数numPartitions指定返回的RDD的分区数。
+- 参数partitioner用于指定分区函数
+
+```
+scala> var rdd1 = sc.makeRDD(1 to 2,1)
+rdd1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[45] at makeRDD at :21
+ 
+scala> rdd1.collect
+res42: Array[Int] = Array(1, 2)
+ 
+scala> var rdd2 = sc.makeRDD(2 to 3,1)
+rdd2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[46] at makeRDD at :21
+ 
+scala> rdd2.collect
+res43: Array[Int] = Array(2, 3)
+ 
+scala> rdd1.intersection(rdd2).collect
+res45: Array[Int] = Array(2)
+ 
+scala> var rdd3 = rdd1.intersection(rdd2)
+rdd3: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[59] at intersection at :25
+ 
+scala> rdd3.partitions.size
+res46: Int = 1
+ 
+scala> var rdd3 = rdd1.intersection(rdd2,2)
+rdd3: org.apache.spark.rdd.RDD[Int] = MapPartitionsRDD[65] at intersection at :25
+ 
+scala> rdd3.partitions.size
+res47: Int = 2
+```
+
+### subtract
+
+def subtract(other: RDD[T]): RDD[T]
+def subtract(other: RDD[T], numPartitions: Int): RDD[T]
+def subtract(other: RDD[T], partitioner: Partitioner)(implicit ord: Ordering[T] = null): RDD[T]
+
+该函数类似于intersection，但返回在RDD中出现，并且不在otherRDD中出现的元素，不去重。
+- 参数含义同intersection
+
+```
+scala> var rdd1 = sc.makeRDD(Seq(1,2,2,3))
+rdd1: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[66] at makeRDD at :21
+ 
+scala> rdd1.collect
+res48: Array[Int] = Array(1, 2, 2, 3)
+ 
+scala> var rdd2 = sc.makeRDD(3 to 4)
+rdd2: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[67] at makeRDD at :21
+ 
+scala> rdd2.collect
+res49: Array[Int] = Array(3, 4)
+ 
+scala> rdd1.subtract(rdd2).collect
+res50: Array[Int] = Array(1, 2, 2)
+```
+
+
+
 
