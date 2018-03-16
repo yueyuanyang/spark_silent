@@ -25,7 +25,7 @@
 2. [Spark RDD行动键值操作(1) - combineByKey、foldByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part11.md)
 3. [Spark RDD行动键值操作(1) - groupByKey、reduceByKey、reduceByKeyLocally](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part12.md)
 4. [Spark RDD行动键值操作(1) - cogroup、join](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part13.md)
-5. [Spark RDD行动键值操作(1) - leftOuterJoin、rightOuterJoin、subtractByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part14.md)
+5. [Spark RDD行动键值操作(1) - leftOuterJoin、rightOuterJoin、subtractByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part15.md)
 
 
 # 第二部分 
