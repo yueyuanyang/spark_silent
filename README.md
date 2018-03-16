@@ -5,14 +5,17 @@
 1.[spark杂记之一 —— 如何设置spark日志的打印级别](https://github.com/yueyuanyang/spark/blob/master/notes/part1.md)
 # 第二部分 
 ## spark-core
+### Action操作
 1. [Spark RDD行动Action操作(1) – first、count、reduce、collect、take、top、takeOrdered](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part1.md)
 2. [Spark RDD行动Action操作(2) - aggregate、fold、lookup、countByKey、foreach、foreachPartition、sortBy](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part2.md)
 3. [Spark RDD行动Action操作(3) - saveAsNewAPIHadoopFile、saveAsNewAPIHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part4.md)
 4. [Spark RDD行动Action操作(4) - saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 
+### Transformation操作
 5. [Spark RDD行动Transformation操作(1) - map、flatMap、distinct、coalesce、repartition](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part5.md)
-6. [Spark RDD行动Transformation操作(1) -  randomSplit、glom、union、intersection、subtract](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part6.md)
-7. [Spark RDD行动Transformation操作(1) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
+6. [Spark RDD行动Transformation操作(2) -  randomSplit、glom、union、intersection、subtract](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part6.md)
+7. [Spark RDD行动Transformation操作(3) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
+8. [Spark RDD行动Transformation操作(3) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
 
 # 第二部分 
 ## spark graph
