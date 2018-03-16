@@ -17,6 +17,7 @@
 7. [Spark RDD行动Transformation操作(3) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
 8. [Spark RDD行动Transformation操作(4) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
 9. [Spark RDD行动Transformation操作(5) - zip、zipPartitions、zipWithIndex、zipWithUniqueId](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part8.md)
+10. [Spark RDD行动Transformation操作(6) - parallelize、makeRDD](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part9.md)
 
 # 第二部分 
 ## spark graph
