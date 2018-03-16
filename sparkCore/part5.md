@@ -1,4 +1,4 @@
-## Spark算子：RDD基本转换操作(1)–map、flatMap、distinct
+## Spark算子：RDD基本转换操作(1)–map、flatMap、distinct、coalesce、repartition
 
 ### map
 
