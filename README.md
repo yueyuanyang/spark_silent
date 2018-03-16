@@ -16,7 +16,7 @@
 6. [Spark RDD行动Transformation操作(2) -  randomSplit、glom、union、intersection、subtract](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part6.md)
 7. [Spark RDD行动Transformation操作(3) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
 8. [Spark RDD行动Transformation操作(4) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
-9. [Spark RDD行动Transformation操作(4) - zip、zipPartitions、zipWithIndex、zipWithUniqueId](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part8.md)
+9. [Spark RDD行动Transformation操作(5) - zip、zipPartitions、zipWithIndex、zipWithUniqueId](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part8.md)
 
 # 第二部分 
 ## spark graph
