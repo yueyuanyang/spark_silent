@@ -85,9 +85,10 @@ spark-submit \
 
 命令中指明了依赖的资源包:jedis-2.9.0.jar,spark-redis-0.3.2.jar,commons-pool2-2.2.jar其中commons-pool2-2.2.jar是spark-redis依赖的包，如果集群环境为CDH发行版，可在/opt/cloudera/parcels/CDH/jars/commons-pool2-2.2.jar下找到该包，，而且yarn的运行环境里面没有默认引入该包；如果为自建环境，则需要自行下载该包，Maven上搜索commons-pool2即可。
 
-### 如果传入的是key数组
+### 如果传入的是key数组，提取数据
 
 ```
+
 import org.apache.spark.{SparkConf, SparkContext}
 import com.redislabs.provider.redis._
 
@@ -99,9 +100,13 @@ object SparkRedis extends App {
   sc.fromRedisKV(keys).coalesce(1).saveAsTextFile("hdfs://nameservice1/spark/test/redisResult2")
 }
 
+("high",444)
+("abc",5242)
+("together",5445)
+
 ```
 
-### k-v 操作
+### k-v 形式 redis写入操作
 
 ```
 import org.apache.spark.{SparkConf, SparkContext}
