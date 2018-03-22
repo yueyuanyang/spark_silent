@@ -61,10 +61,15 @@ def fromRedisKV[T](keysOrKeyPattern: T,
 **先看传入的参数：**
 
 - 泛型类型keysOrKeyPattern
+
 从的模式匹配代码中可以看出，这里的T可是是两种类型，一个是String，另一个是Array[String],如果传入其他类型则会抛出运行时异常，其中String类型的意思是匹配键，这里可以用通配符比如foo*，所以返回值是一个结果集RDD[(String, String)]，当参数类型为Array[String]时是指传入key的数组，返回的结果则为相应的的结果集，RDD的内容类型也是KV形式。
+
 - Int类型partitionNum
+
 生成RDD的分区数，默认为3，如果传入的第一个参数类型是Array[String]，这个参数可以这样设置，先预估一下返回结果集的大小，使用keyArr.length / num + 1，这样则保证分区的合理性，以防发生数据倾斜。若第一个参数类型为String，能预估尽量预估，如果实在没办法，比如确实在这里发生了数据倾斜，可以尝试考虑使用sc.fromRedisKeys()返回key的集合，提前把握返回结果集的大小，或者根据集群机器数量，把握分区数。
+
 - 柯里化形式隐式参数redisConfig
+
 由于我们之前在sparkConf里面set了相应的参数，这里不传入这个参数即可。如要调整，则可以按照源码中的方式传入，其中RedisEndpoint是一个case class类，而且很多参数都有默认值（比如6379的端口号），所以自己建立一个RedisEndpoint也是非常方便的。
 
 打包之后运行，命令为：
