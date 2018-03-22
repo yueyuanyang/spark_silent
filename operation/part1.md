@@ -8,6 +8,21 @@ Spark的优势在于内存计算，然而在计算中难免会用到一些元数
 
 可以看出提供的功能还是挺全面的，有单独的redis分区，redisRDD，SQLAPI以及StreamingAPI
 
+maven 依赖(spark-redis手动导入)
+```
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>2.9.0</version>
+    </dependency>
+    <dependency>
+      <groupId>RedisLabs</groupId>
+      <artifactId>spark-redis</artifactId>
+      <version>0.3.2</version>
+    </dependency>
+
+```
+
 下面我们一点一点来做一个示例：
 
 ## 现在我们启动SparkContext
