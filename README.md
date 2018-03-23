@@ -55,6 +55,6 @@
 
 [1. spark 优雅的操作redis](https://github.com/yueyuanyang/spark_silent/blob/master/operation/part1.md)
 
-[2.spark 优雅的操作redi(官方文档)](https://github.com/yueyuanyang/spark_silent/blob/master/operation/part2.md)
+[2. spark 优雅的操作redis(官方文档)](https://github.com/yueyuanyang/spark_silent/blob/master/operation/part2.md)
 
 
