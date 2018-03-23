@@ -1,14 +1,16 @@
 
 # Spark-Redis
-可以从 [Redis](http://redis.io) with [Apache Spark](http://spark.apache.org/)查看读、 写操作
-A library for reading and writing data from and to [Redis](http://redis.io) with [Apache Spark](http://spark.apache.org/)
 
-Spark-Redis provides access to all of Redis' data structures - String, Hash, List, Set and Sorted Set - from Spark as RDDs. The library can be used both with Redis stand-alone as well as clustered databases. When used with Redis cluster, Spark-Redis is aware of its partitioning scheme and adjusts in response to resharding and node failure events.
+可以从 [Redis](http://redis.io) with [Apache Spark](http://spark.apache.org/)这里查看读、 写操作
 
-Spark-Redis also provides Spark-Streaming support.
+
+Spark-Redis提供了所有Redis数据结构的访问权限——字 符串，哈希，列表，集合和排序集合,读取数据作为Spark的RDD。 该库可以与Redis独立以及集群数据库一起使用。 与Redis集群一起使用时，Spark-Redis知道其分区方案，并根据重新分片和节点故障事件进行调整。
+
+Spark-Redis 也支持 Spark-Streaming.
 
 ## Minimal requirements
-You'll need the the following to use Spark-Redis:
+
+你需要在如下条件下使用 Spark-Redis:
 
  - Apache Spark v1.4.0
  - Scala v2.10.4
@@ -17,18 +19,21 @@ You'll need the the following to use Spark-Redis:
 
 ## Known limitations
 
-* Java, Python and R API bindings are not provided at this time
-* The package was only tested with the following stack:
+* Java, Python and R API 暂时不支持
+* 本包知识在如下条件下测试:
  - Apache Spark v1.4.0
  - Scala v2.10.4
  - Jedis v2.7 and v2.8 pre-release (see [below](#jedis-and-read-only-redis-cluster-slave-nodes) for details)
  - Redis v2.8.12 and v3.0.3
 
 ## Additional considerations
-This library is work in progress so the API may change before the official release.
+
+该库正在进行中，因此API可能会在官方发布之前更改。
 
 ## Getting the library
-You can download the library's source and build it:
+
+您可以下载官方的资源并构建它：
+
 ```
 git clone https://github.com/RedisLabs/spark-redis.git
 cd spark-redis
@@ -36,15 +41,18 @@ mvn clean package -DskipTests
 ```
 
 ### Jedis and read-only Redis cluster slave nodes
-Jedis' current version - v2.7 - does not support reading from Redis cluster's slave nodes. This functionality will only be included in its upcoming version, v2.8.
 
-To use Spark-Redis with Redis cluster's slave nodes, the library's source includes a pre-release of Jedis v2.8 under the `with-slaves` branch. Switch to that branch by entering the following before running `mvn clean install`:
+Jedis的当前版本 - v2.7 - 不支持从Redis集群的从节点读取数据。 该功能仅包含在其即将发布的版本v2.8中。
+
+要将Spark-Redis与Redis群集的从属节点一起使用，该库的源包括在“with-slaves”分支下预发布Jedis v2.8。 在运行`mvn clean install`之前输入以下内容切换到该分支：
+
 ```
 git checkout with-slaves
 ```
 
 ## Using the library
-Add Spark-Redis to Spark with the `--jars` command line option. For example, use it from spark-shell, include it in the following manner:
+
+使用`--jars`命令行选项将Spark-Redis添加到Spark。 例如，从spark-shell中使用它，以下列方式包含它：
 
 ```
 $ bin/spark-shell --jars <path-to>/spark-redis-<version>.jar,<path-to>/jedis-<version>.jar
@@ -64,7 +72,7 @@ The following sections contain code snippets that demonstrate the use of Spark-R
 
 ### Configuring Connections to Redis using SparkConf
 
-Below is an example configuration of SparkContext with redis configuration:
+下面是带有redis配置的SparkContext的示例配置：
 
 ```scala
 import com.redislabs.provider.redis._
