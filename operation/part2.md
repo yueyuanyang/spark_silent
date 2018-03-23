@@ -280,10 +280,10 @@ Spark-Redis支持来自 Redis 实例/集群的流式数据，目前流式数据�
 
 用法：
 
-- `createRedisStream` 将创建一个 `(listName，value)`流
+- `createRedisStream` 将创建一个 `(listName,value)`流
 - 如果你不关心哪个列表提供了这个值,你可以使用 `createRedisStreamWithoutListname` 来获得唯一的 `value` 流
 
-1) 使用以下命令从`foo`和`bar`列表中获取 `(listName，value)` 流
+1) 使用以下命令从`foo`和`bar`列表中获取 `(listName,value)` 流
 
 ```
 import org.apache.spark.streaming.{Seconds, StreamingContext}
