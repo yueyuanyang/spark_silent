@@ -276,7 +276,7 @@ sc.toRedisZSET(zsetRDD, zsetName)
 
 ### Streaming
 
-Spark-Redis支持来自 Redis 实例/集群的流式数据，目前流式数据是通过 `blpop` 命令从 Redis'List 中获取的。 用户需要提供一个数组来存储他们关心的所有List名称。 默认情况下存储方式为[storageLevel](http://spark.apache.org/docs/latest/streaming-programming-guide.html#data-serialization)是 `MEMORY_AND_DISK_SER_2`,您可以根据您的需求进行更改。
+Spark-Redis支持来自 Redis 单机/集群的流式数据，目前流式数据是通过 `blpop` 命令从 Redis的 `List` 类型中获取的。 用户需要提供一个数组来存储他们关心的所有List名称。 默认情况下存储方式为[storageLevel](http://spark.apache.org/docs/latest/streaming-programming-guide.html#data-serialization)是 `MEMORY_AND_DISK_SER_2`,您可以根据您的需求进行更改。
 
 用法：
 
@@ -334,5 +334,5 @@ def twoEndpointExample ( sc: SparkContext) = {
 }
 
 ```
-如果您想使用多个Redis集群/实例，则可以在代码块中使用隐式RedisConfig来指定该块中的目标集群/实例。
+如果您想使用多个Redis集群/单机，则可以在代码块中使用隐式RedisConfig来指定该块中的目标集群/单机。
 
