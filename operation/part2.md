@@ -117,7 +117,7 @@ val keysRDD = sc.fromRedisKeys(Array("foo", "bar"), 5)
 
 ### Reading data
 
-Each of Redis' data types can be read to an RDD. The following snippet demonstrates reading Redis Strings.
+每个Redis的数据类型都可以读取到RDD。 以下代码片段演示了如何阅读Redis字符串。
 
 #### Strings
 
@@ -127,22 +127,23 @@ val stringRDD = sc.fromRedisKV("keyPattern*")
 val stringRDD = sc.fromRedisKV(Array("foo", "bar"))
 ```
 
-Once run, `stringRDD: RDD[(String, String)]` will contain the string values of all keys whose names are provided by keyPattern or Array[String].
+一旦运行，`字符串RDD：RDD [（String，String）]`将包含名称由键Pattern或Array [String]提供的所有键的字符串值。
 
 #### Hashes
+
 ```
 val hashRDD = sc.fromRedisHash("keyPattern*")
 val hashRDD = sc.fromRedisHash(Array("foo", "bar"))
 ```
 
-This will populate `hashRDD: RDD[(String, String)]` with the fields and values of the Redis Hashes, the hashes' names are provided by keyPattern or Array[String]
+这将使用Redis哈希的字段和值填充`hashRDD：RDD [（String，String）]`，哈希的名称由keyPattern或Array [String]
 
 #### Lists
 ```
 val listRDD = sc.fromRedisList("keyPattern*")
 val listRDD = sc.fromRedisList(Array("foo", "bar"))
 ```
-The contents (members) of the Redis Lists in whose names are provided by keyPattern or Array[String] will be stored in `listRDD: RDD[String]`
+redis列表中其名称由keyPattern或Array [String]提供的内容（成员）将存储在`listRDD：RDD [String]`
 
 #### Sets
 ```
@@ -150,7 +151,7 @@ val setRDD = sc.fromRedisSet("keyPattern*")
 val setRDD = sc.fromRedisSet(Array("foo", "bar"))
 ```
 
-The Redis Sets' members will be written to `setRDD: RDD[String]`.
+Redis集的成员将被写入`setRDD：RDD [String]`。
 
 #### Sorted Sets
 ```
@@ -158,14 +159,14 @@ val zsetRDD = sc.fromRedisZSetWithScore("keyPattern*")
 val zsetRDD = sc.fromRedisZSetWithScore(Array("foo", "bar"))
 ```
 
-Using `fromRedisZSetWithScore` will store in `zsetRDD: RDD[(String, Double)]`, an RDD that consists of members and their scores, from the Redis Sorted Sets whose keys are provided by keyPattern or Array[String].
+使用`fromRedisZSetWithScore`将从Redis Sorted集合中存储`zsetRDD：RDD [（String，Double）]`，一个由成员及其得分组成的RDD，其中键由keyPattern或Array [String]提供。
 
 ```
 val zsetRDD = sc.fromRedisZSet("keyPattern*")
 val zsetRDD = sc.fromRedisZSet(Array("foo", "bar"))
 ```
 
-Using `fromRedisZSet` will store in `zsetRDD: RDD[String]`, an RDD that consists of members, from the Redis Sorted Sets whose keys are provided by keyPattern or Array[String].
+使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由成员构成的RDD，来自Redis Sorted集，其键由KeyPattern或Array [String]提供。
 
 ```
 val startPos: Int = _
@@ -174,7 +175,7 @@ val zsetRDD = sc.fromRedisZRangeWithScore("keyPattern*", startPos, endPos)
 val zsetRDD = sc.fromRedisZRangeWithScore(Array("foo", "bar"), startPos, endPos)
 ```
 
-Using `fromRedisZRangeWithScore` will store in `zsetRDD: RDD[(String, Double)]`, an RDD that consists of members and the members' ranges are within [startPos, endPos] of its own Sorted Set, from the Redis Sorted Sets whose keys are provided by keyPattern or Array[String].
+使用`fromRedisZRangeWithScore`将存储在`zsetRDD：RDD [（String，Double）]`中，由成员构成的RDD和成员的范围在其自己分类集的[startPos，endPos]内，来自Redis Sorted Sets 键由keyPattern或Array [String]提供。
 
 ```
 val startPos: Int = _
@@ -183,7 +184,7 @@ val zsetRDD = sc.fromRedisZRange("keyPattern*", startPos, endPos)
 val zsetRDD = sc.fromRedisZRange(Array("foo", "bar"), startPos, endPos)
 ```
 
-Using `fromRedisZSet` will store in `zsetRDD: RDD[String]`, an RDD that consists of members and the members' ranges are within [startPos, endPos] of its own Sorted Set, from the Redis Sorted Sets whose keys are provided by keyPattern or Array[String].
+使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由成员构成的RDD和成员的范围位于其自己分类集的[startPos，endPos]之内，来自Redis分类集 keyPattern或Array [String]。
 
 ```
 val min: Double = _
@@ -192,7 +193,7 @@ val zsetRDD = sc.fromRedisZRangeByScoreWithScore("keyPattern*", min, max)
 val zsetRDD = sc.fromRedisZRangeByScoreWithScore(Array("foo", "bar"), min, max)
 ```
 
-Using `fromRedisZRangeByScoreWithScore` will store in `zsetRDD: RDD[(String, Double)]`, an RDD that consists of members and the members' scores are within [min, max], from the Redis Sorted Sets whose keys are provided by keyPattern or Array[String].
+使用`fromRedisZRangeByScoreWithScore`将存储在`zsetRDD：RDD [（String，Double）]`中，一个由成员组成且成员的分数在[min，max]内的RDD，来自Redis Sorted集合，其键由keyPattern 或Array [String]。
 
 ```
 val min: Double = _
@@ -201,13 +202,15 @@ val zsetRDD = sc.fromRedisZRangeByScore("keyPattern*", min, max)
 val zsetRDD = sc.fromRedisZRangeByScore(Array("foo", "bar"), min, max)
 ```
 
-Using `fromRedisZSet` will store in `zsetRDD: RDD[String]`, an RDD that consists of members and the members' scores are within [min, max], from the Redis Sorted Sets whose keys are provided by keyPattern or Array[String].
+使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由成员组成并且成员的分数在[min，max]之内的RDD，来自Redis Sorted Sets，其键由KeyPattern或Array [String]。
 
 ### Writing data
-To write data from Spark to Redis, you'll need to prepare the appropriate RDD depending on the data type you want to use for storing the data in it.
+
+要将Spark中的数据写入Redis，您需要根据要用于存储数据的数据类型准备适当的RDD。
 
 #### Strings
-For String values, your RDD should consist of the key-value pairs that are to be written. Assuming that the strings RDD is called `stringRDD`, use the following snippet for writing it to Redis:
+
+对于字符串值，您的RDD应该包含要写入的键值对。 假设字符串RDD被称为`stringRDD`，请使用以下代码片段将其写入Redis：
 
 ```
 ...
@@ -215,7 +218,8 @@ sc.toRedisKV(stringRDD)
 ```
 
 #### Hashes
-To store a Redis Hash, the RDD should consist of its field-value pairs. If the RDD is called `hashRDD`, the following should be used for storing it in the key name specified by `hashName`:
+
+要存储Redis哈希，RDD应该由其字段值对组成。 如果RDD被称为`hashRDD`，则应使用以下内容将其存储在由`hashName`指定的key名称中：
 
 ```
 ...
@@ -223,33 +227,34 @@ sc.toRedisHASH(hashRDD, hashName)
 ```
 
 #### Lists
-Use the following to store an RDD in a Redis List:
+
+使用以下命令将RDD存储在Redis列表中：
 
 ```
 ...
 sc.toRedisLIST(listRDD, listName)
 ```
 
-Use the following to store an RDD in a fixed-size Redis List:
+使用以下命令将RDD存储在固定大小的Redis列表中：
 
 ```
 ...
 sc.toRedisFixedLIST(listRDD, listName, listSize)
 ```
 
-The `listRDD` is an RDD that contains all of the list's string elements in order, and `listName` is the list's key name.
-`listSize` is an integer which specifies the size of the redis list; it is optional, and will default to an unlimited size.
+listRDD是一个RDD，它按顺序包含所有列表的字符串元素，而listName是列表的键名。`listSize`是一个整数，它指定了redis列表的大小; 它是可选的，并将默认为无限大小。
 
 
 #### Sets
-For storing data in a Redis Set, use `toRedisSET` as follows:
+
+要将数据存储在Redis集中，请按如下所示使用`toRedisSET`：
 
 ```
 ...
 sc.toRedisSET(setRDD, setName)
 ```
 
-Where `setRDD` is an RDD with the set's string elements and `setName` is the name of the key for that set.
+其中`setRDD`是一个RDD，集合的字符串元素和`setName`是该集合的键名。
 
 #### Sorted Sets
 ```
@@ -257,13 +262,14 @@ Where `setRDD` is an RDD with the set's string elements and `setName` is the nam
 sc.toRedisZSET(zsetRDD, zsetName)
 ```
 
-The above example demonstrates storing data in Redis in a Sorted Set. The `zsetRDD` in the example should contain pairs of members and their scores, whereas `zsetName` is the name for that key.
+上面的例子演示了如何在Redis中将数据存储在Sorted Set中。 示例中的`zsetRDD`应该包含成员对和它们的分数，而`zsetName`是该键的名称。
 
 ### Streaming
-Spark-Redis support streaming data from Redis instance/cluster, currently streaming data are fetched from Redis' List by the `blpop` command. Users are required to provide an array which stores all the List names they are interested in. The [storageLevel](http://spark.apache.org/docs/latest/streaming-programming-guide.html#data-serialization) is `MEMORY_AND_DISK_SER_2` by default, you can change it on your demand.
+Spark-Redis支持来自Redis实例/集群的流式数据，目前流式数据是通过`blpop`命令从Redis'List中获取的。 用户需要提供一个数组来存储他们感兴趣的所有List名称。[storageLevel]（http://spark.apache.org/docs/latest/streaming-programming-guide.html#data-serialization）是 `MEMORY_AND_DISK_SER_2`默认情况下，您可以根据您的需求进行更改。
+
 `createRedisStream` will create a `(listName, value)` stream, but if you don't care about which list feeds the value, you can use `createRedisStreamWithoutListname` to get the only `value` stream.
 
-Use the following to get a `(listName, value)` stream from `foo` and `bar` list
+使用以下命令从`foo`和`bar`列表中获取`（listName，value）`流
 
 ```
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -276,7 +282,7 @@ ssc.awaitTermination()
 ```
 
 
-Use the following to get a `value` stream from `foo` and `bar` list
+使用以下命令从`foo`和`bar`列表中获取`value`流
 
 ```
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -307,20 +313,5 @@ def twoEndpointExample ( sc: SparkContext) = {
   }
 }
 ```
-If you want to use multiple redis clusters/instances, an implicit RedisConfig can be used in a code block to specify the target cluster/instance in that block.
+如果您想使用多个Redis集群/实例，则可以在代码块中使用隐式RedisConfig来指定该块中的目标集群/实例。
 
-## Contributing
-
-You're encouraged to contribute to the open source Spark-Redis project. There are two ways you can do so.
-
-### Issues
-
-If you encounter an issue while using the Spark-Redis library, please report it at the project's [issues tracker](https://github.com/RedisLabs/spark-redis/issues).
-
-### Pull request
-
-Code contributions to the Spark-Redis project can be made using [pull requests](https://github.com/RedisLabs/spark-redis/pulls). To submit a pull request:
-
- 1. Fork this project.
- 2. Make and commit your changes.
- 3. Submit your changes as a pull request.
