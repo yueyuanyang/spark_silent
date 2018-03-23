@@ -68,7 +68,7 @@ Using Scala version 2.10.4 (OpenJDK 64-Bit Server VM, Java 1.7.0_79)
 ...
 ```
 
-The following sections contain code snippets that demonstrate the use of Spark-Redis. To use the sample code, you'll need to replace `your.redis.server` and `6379` with your Redis database's IP address or hostname and port, respectively.
+以下部分包含演示Spark-Redis使用的代码片段。 要使用示例代码，您需要分别将`your.redis.server`和`6379`替换为您的Redis数据库的IP地址或主机名和端口。
 
 ### Configuring Connections to Redis using SparkConf
 
@@ -94,25 +94,26 @@ sc = new SparkContext(new SparkConf()
   )
 ```
 
-The supported configuration keys are:
+支持的配置keys包括：
 
-* `redis.host` - host or IP of the initial node we connect to. The connector will read the cluster
-topology from the initial node, so there is no need to provide the rest of the cluster nodes.
-* `redis.port` - the inital node's TCP redis port.
-* `redis.auth` - the initial node's AUTH password
-* `redis.db` - optional DB number. Avoid using this, especially in cluster mode.
+* `redis.host` - 主机或我们连接到的初始节点的IP。 连接器将读取群集拓扑结构从初始节点开始，因此不需要提供其余的集群节点。
+* `redis.port` -  初始节点TCP redis端口。
+* `redis.auth` - 初始节点 AUTH password。
+* `redis.db` -  可选的database库号。特别是在集群模式下,避免使用这个。
 
 ### The keys RDD
-Since data access in Redis is based on keys, to use Spark-Redis you'll first need a keys RDD.  The following example shows how to read key names from Redis into an RDD:
+
+由于Redis中的数据访问基于key，因此要使用Spark-Redis，首先需要 key RDD。 以下示例显示如何将Redis中的键名读入RDD中：
+
 ```
 import com.redislabs.provider.redis._
 
 val keysRDD = sc.fromRedisKeyPattern("foo*", 5)
 val keysRDD = sc.fromRedisKeys(Array("foo", "bar"), 5)
+
 ```
 
-The above example populates the keys RDD by retrieving the key names from Redis that match the given pattern (`foo*`) or the keys can be listed by an Array. Furthermore, it overrides the default setting of 3 partitions in the RDD with a new value of 5 - each partition consists of a set of Redis cluster hashslots contain the matched key names.
-
+上面的示例通过从Redis中检索出与给定模式匹配的key(`foo *`)或者可以由数组组成的key匹配的值,返回RDD形式。 此外,设置的新值为5,覆盖了RDD中3个分区的默认设置, 每个分区由一组包含匹配的关键字名称Redis集群哈希槽组成。
 
 ### Reading data
 
