@@ -292,6 +292,8 @@ import com.redislabs.provider.redis._
 val ssc = new StreamingContext(sc, Seconds(1))
 val redisStream = ssc.createRedisStream(Array("foo", "bar"), storageLevel = StorageLevel.MEMORY_AND_DISK_2)
 redisStream.print
+
+ssc.start()
 ssc.awaitTermination()
 
 ```
@@ -302,10 +304,13 @@ ssc.awaitTermination()
 import org.apache.spark.streaming.{Seconds, StreamingContext}
 import org.apache.spark.storage.StorageLevel
 import com.redislabs.provider.redis._
+
 val ssc = new StreamingContext(sc, Seconds(1))
 val redisStream = ssc.createRedisStreamWithoutListname(Array("foo", "bar"), 
 storageLevel = StorageLevel.MEMORY_AND_DISK_2)
 redisStream.print
+
+ssc.start()
 ssc.awaitTermination()
 ```
 
