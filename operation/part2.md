@@ -4,13 +4,13 @@
 可以从 [Redis](http://redis.io) with [Apache Spark](http://spark.apache.org/)这里查看读、 写操作
 
 
-Spark-Redis提供了所有Redis数据结构的访问权限——字 符串，哈希，列表，集合和排序集合,读取数据作为Spark的RDD。 该库可以与Redis独立以及集群数据库一起使用。 与Redis集群一起使用时，Spark-Redis知道其分区方案，并根据重新分片和节点故障事件进行调整。
+Spark-Redis提供了所有Redis数据结构的访问权限——字 符串，哈希，列表，集合和排序集合,读取数据转为Spark的RDD。 该库可以与Redis独立以及集群数据库一起使用。当与Redis集群一起使用时，Spark-Redis知道其分区方案，并根据重新分片和节点故障事件进行调整。
 
 Spark-Redis 也支持 Spark-Streaming.
 
 ## Minimal requirements
 
-你需要在如下条件下使用 Spark-Redis:
+使用 Spark-Redis 基本环境:
 
  - Apache Spark v1.4.0
  - Scala v2.10.4
@@ -20,7 +20,9 @@ Spark-Redis 也支持 Spark-Streaming.
 ## Known limitations
 
 * Java, Python and R API 暂时不支持
-* 本包知识在如下条件下测试:
+
+* 测试在下面的环境下:
+
  - Apache Spark v1.4.0
  - Scala v2.10.4
  - Jedis v2.7 and v2.8 pre-release (see [below](#jedis-and-read-only-redis-cluster-slave-nodes) for details)
@@ -28,11 +30,11 @@ Spark-Redis 也支持 Spark-Streaming.
 
 ## Additional considerations
 
-该库正在进行中，因此API可能会在官方发布之前更改。
+该库正仍在进行中，因此API可能会在官方发布之前更改。
 
 ## Getting the library
 
-您可以下载官方的资源并构建它：
+您可以从官方下载资源并构建它：
 
 ```
 git clone https://github.com/RedisLabs/spark-redis.git
@@ -42,9 +44,9 @@ mvn clean package -DskipTests
 
 ### Jedis and read-only Redis cluster slave nodes
 
-Jedis的当前版本 - v2.7 - 不支持从Redis集群的从节点读取数据。 该功能仅包含在其即将发布的版本v2.8中。
+Jedis的当前版本- v2.7 - 不支持从Redis集群的从节点读取数据。 该功能仅包含在其即将发布的版本v2.8中。
 
-要将Spark-Redis与Redis群集的从属节点一起使用，该库的源包括在“with-slaves”分支下预发布Jedis v2.8。 在运行`mvn clean install`之前输入以下内容切换到该分支：
+要将Spark-Redis与Redis群集的从属节点一起使用，该库的源包括在 “with-slaves” 分支下预发布Jedis v2.8。 在运行`mvn clean install`之前输入以下内容切换到该分支：
 
 ```
 git checkout with-slaves
@@ -52,7 +54,7 @@ git checkout with-slaves
 
 ## Using the library
 
-使用`--jars`命令行选项将Spark-Redis添加到Spark。 例如，从spark-shell中使用它，以下列方式包含它：
+使用`--jars`命令行选项将Spark-Redis添加到Spark。 例如，以下列方式从spark-shell中使用它：
 
 ```
 $ bin/spark-shell --jars <path-to>/spark-redis-<version>.jar,<path-to>/jedis-<version>.jar
@@ -68,13 +70,14 @@ Using Scala version 2.10.4 (OpenJDK 64-Bit Server VM, Java 1.7.0_79)
 ...
 ```
 
-以下部分包含演示Spark-Redis使用的代码片段。 要使用示例代码，您需要分别将`your.redis.server`和`6379`替换为您的Redis数据库的IP地址或主机名和端口。
+以下部分包含演示Spark-Redis使用的代码块。 要使用示例代码，您需要分别将`your.redis.server`和`6379`替换为您的Redis数据库的IP地址或主机名和端口。
 
 ### Configuring Connections to Redis using SparkConf
 
 下面是带有redis配置的SparkContext的示例配置：
 
 ```scala
+
 import com.redislabs.provider.redis._
 
 ...
@@ -94,7 +97,7 @@ sc = new SparkContext(new SparkConf()
   )
 ```
 
-支持的配置keys包括：
+支持的配置k-v参数包括：
 
 * `redis.host` - 主机或我们连接到的初始节点的IP。 连接器将读取群集拓扑结构从初始节点开始，因此不需要提供其余的集群节点。
 * `redis.port` -  初始节点TCP redis端口。
@@ -103,7 +106,7 @@ sc = new SparkContext(new SparkConf()
 
 ### The keys RDD
 
-由于Redis中的数据访问基于key，因此要使用Spark-Redis，首先需要 key RDD。 以下示例显示如何将Redis中的键名读入RDD中：
+由于Redis中的数据访问都是基于key值,因此要使用Spark-Redis，首先需要 key RDD。 以下示例显示如何利用 key将Redis中的值读入RDD中：
 
 ```
 import com.redislabs.provider.redis._
@@ -113,11 +116,17 @@ val keysRDD = sc.fromRedisKeys(Array("foo", "bar"), 5)
 
 ```
 
-上面的示例通过从Redis中检索出与给定模式匹配的key(`foo *`)或者可以由数组组成的key匹配的值,返回RDD形式。 此外,设置的新值为5,覆盖了RDD中3个分区的默认设置, 每个分区由一组包含匹配的关键字名称Redis集群哈希槽组成。
+上面的示例通过 RDD 从Redis中检索出数据，返回RDD形式，key值形式包括：
+- 模式匹配的key(`foo *`) 
+- 数组形式Array("foo", "bar")。 
+
+此外，后面的参数为RDD分区数，本例中设置为5.其中,RDD默认设置为3, 每个分区由一组包含匹配的关键字名称Redis集群哈希槽组成。
 
 ### Reading data
 
-每个Redis的数据类型都可以读取到RDD。 以下代码片段演示了如何阅读Redis字符串。
+每个Redis的数据类型都可以读取成 RDD形式。 
+
+以下代码片段演示了如何阅读Redis字符串。
 
 #### Strings
 
@@ -127,7 +136,7 @@ val stringRDD = sc.fromRedisKV("keyPattern*")
 val stringRDD = sc.fromRedisKV(Array("foo", "bar"))
 ```
 
-一旦运行，`字符串RDD：RDD [（String，String）]`将包含名称由键Pattern或Array [String]提供的所有键的字符串值。
+一旦运行，`字符串RDD：RDD [(String，String)]`将包含名称由键Pattern或Array [String]提供的所有key对应的字符串值。
 
 #### Hashes
 
@@ -136,14 +145,14 @@ val hashRDD = sc.fromRedisHash("keyPattern*")
 val hashRDD = sc.fromRedisHash(Array("foo", "bar"))
 ```
 
-这将使用Redis哈希的字段和值填充`hashRDD：RDD [（String，String）]`，哈希的名称由keyPattern或Array [String]
+这将使用Redis哈希的key和value,形成 `hashRDD：RDD [(String，String)]`,哈希的名称由keyPattern或Array [String]
 
 #### Lists
 ```
 val listRDD = sc.fromRedisList("keyPattern*")
 val listRDD = sc.fromRedisList(Array("foo", "bar"))
 ```
-redis列表中其名称由keyPattern或Array [String]提供的内容（成员）将存储在`listRDD：RDD [String]`
+redis列表中其名称由keyPattern或Array [String]提供的内容（成员）将存储在 `listRDD：RDD [String]`
 
 #### Sets
 ```
@@ -151,22 +160,23 @@ val setRDD = sc.fromRedisSet("keyPattern*")
 val setRDD = sc.fromRedisSet(Array("foo", "bar"))
 ```
 
-Redis集的成员将被写入`setRDD：RDD [String]`。
+Redis集合的成员将被写入 `setRDD：RDD [String]`。
 
 #### Sorted Sets
+
 ```
 val zsetRDD = sc.fromRedisZSetWithScore("keyPattern*")
 val zsetRDD = sc.fromRedisZSetWithScore(Array("foo", "bar"))
 ```
 
-使用`fromRedisZSetWithScore`将从Redis Sorted集合中存储`zsetRDD：RDD [（String，Double）]`，一个由成员及其得分组成的RDD，其中键由keyPattern或Array [String]提供。
+使用`fromRedisZSetWithScore`将从Redis Sorted集合中存储为 `zsetRDD：RDD [(String，Double)]`，一个由member及其scores组成的RDD，其中键由keyPattern或Array [String]提供。
 
 ```
 val zsetRDD = sc.fromRedisZSet("keyPattern*")
 val zsetRDD = sc.fromRedisZSet(Array("foo", "bar"))
 ```
 
-使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由成员构成的RDD，来自Redis Sorted集，其键由KeyPattern或Array [String]提供。
+使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由member构成的RDD,来自Redis Sorted集，其键由KeyPattern或Array [String]提供。
 
 ```
 val startPos: Int = _
@@ -175,7 +185,7 @@ val zsetRDD = sc.fromRedisZRangeWithScore("keyPattern*", startPos, endPos)
 val zsetRDD = sc.fromRedisZRangeWithScore(Array("foo", "bar"), startPos, endPos)
 ```
 
-使用`fromRedisZRangeWithScore`将存储在`zsetRDD：RDD [（String，Double）]`中，由成员构成的RDD和成员的范围在其自己分类集的[startPos，endPos]内，来自Redis Sorted Sets 键由keyPattern或Array [String]提供。
+使用`fromRedisZRangeWithScore`将存储在`zsetRDD：RDD [(String,Double)]`中，在其自己分类集的[startPos，endPos]范围内的member构成的RDD和member的构成.其中,Redis Sorted Sets 键由keyPattern或Array [String]。
 
 ```
 val startPos: Int = _
@@ -184,7 +194,7 @@ val zsetRDD = sc.fromRedisZRange("keyPattern*", startPos, endPos)
 val zsetRDD = sc.fromRedisZRange(Array("foo", "bar"), startPos, endPos)
 ```
 
-使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由成员构成的RDD和成员的范围位于其自己分类集的[startPos，endPos]之内，来自Redis分类集 keyPattern或Array [String]。
+使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由member构成的RDD和member的范围位于其自己分类集的[startPos，endPos]之内，来自Redis分类集 keyPattern或Array [String]。
 
 ```
 val min: Double = _
@@ -193,7 +203,7 @@ val zsetRDD = sc.fromRedisZRangeByScoreWithScore("keyPattern*", min, max)
 val zsetRDD = sc.fromRedisZRangeByScoreWithScore(Array("foo", "bar"), min, max)
 ```
 
-使用`fromRedisZRangeByScoreWithScore`将存储在`zsetRDD：RDD [（String，Double）]`中，一个由成员组成且成员的分数在[min，max]内的RDD，来自Redis Sorted集合，其键由keyPattern 或Array [String]。
+使用`fromRedisZRangeByScoreWithScore`将存储在`zsetRDD：RDD [（String，Double）]`中，一个由member组成且member的分数在[min，max]内的RDD，来自Redis Sorted集合，其键由keyPattern 或Array [String]。
 
 ```
 val min: Double = _
@@ -202,7 +212,7 @@ val zsetRDD = sc.fromRedisZRangeByScore("keyPattern*", min, max)
 val zsetRDD = sc.fromRedisZRangeByScore(Array("foo", "bar"), min, max)
 ```
 
-使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由成员组成并且成员的分数在[min，max]之内的RDD，来自Redis Sorted Sets，其键由KeyPattern或Array [String]。
+使用`fromRedisZSet`将存储在`zsetRDD：RDD [String]`中，一个由member组成并且member的分数在[min，max]之内的RDD，来自Redis Sorted Sets，其键由KeyPattern或Array [String]。
 
 ### Writing data
 
@@ -265,11 +275,15 @@ sc.toRedisZSET(zsetRDD, zsetName)
 上面的例子演示了如何在Redis中将数据存储在Sorted Set中。 示例中的`zsetRDD`应该包含成员对和它们的分数，而`zsetName`是该键的名称。
 
 ### Streaming
-Spark-Redis支持来自Redis实例/集群的流式数据，目前流式数据是通过`blpop`命令从Redis'List中获取的。 用户需要提供一个数组来存储他们感兴趣的所有List名称。[storageLevel]（http://spark.apache.org/docs/latest/streaming-programming-guide.html#data-serialization）是 `MEMORY_AND_DISK_SER_2`默认情况下，您可以根据您的需求进行更改。
 
-`createRedisStream` will create a `(listName, value)` stream, but if you don't care about which list feeds the value, you can use `createRedisStreamWithoutListname` to get the only `value` stream.
+Spark-Redis支持来自 Redis 实例/集群的流式数据，目前流式数据是通过 `blpop` 命令从 Redis'List 中获取的。 用户需要提供一个数组来存储他们关心的所有List名称。 默认情况下存储方式为[storageLevel]（http://spark.apache.org/docs/latest/streaming-programming-guide.html#data-serialization）是 `MEMORY_AND_DISK_SER_2`,您可以根据您的需求进行更改。
 
-使用以下命令从`foo`和`bar`列表中获取`（listName，value）`流
+用法：
+
+- `createRedisStream` 将创建一个 `(listName，value)`流
+- 如果你不关心哪个列表提供了这个值,你可以使用 `createRedisStreamWithoutListname` 来获得唯一的 `value` 流
+
+1) 使用以下命令从`foo`和`bar`列表中获取 `(listName，value)` 流
 
 ```
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -279,10 +293,10 @@ val ssc = new StreamingContext(sc, Seconds(1))
 val redisStream = ssc.createRedisStream(Array("foo", "bar"), storageLevel = StorageLevel.MEMORY_AND_DISK_2)
 redisStream.print
 ssc.awaitTermination()
+
 ```
 
-
-使用以下命令从`foo`和`bar`列表中获取`value`流
+2) 使用以下命令从`foo`和`bar`列表中获取`value`流
 
 ```
 import org.apache.spark.streaming.{Seconds, StreamingContext}
@@ -312,6 +326,7 @@ def twoEndpointExample ( sc: SparkContext) = {
     sc.fromRedisKV("*")
   }
 }
+
 ```
 如果您想使用多个Redis集群/实例，则可以在代码块中使用隐式RedisConfig来指定该块中的目标集群/实例。
 
