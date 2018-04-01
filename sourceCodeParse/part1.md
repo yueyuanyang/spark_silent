@@ -9,13 +9,13 @@ val wordCount = sc.textFile("/usr/").flatMap(_.split(" ")).map((_,1))
 
 **wordcount stage 图解**
 
-[stage](https://github.com/yueyuanyang/spark_silent/blob/master/sourceCodeParse/img/1.jpg)
+![stage](https://github.com/yueyuanyang/spark_silent/blob/master/sourceCodeParse/img/1.jpg)
 
 **查看执行过程**
 
 cache.toDugStirng
 
-[](https://github.com/yueyuanyang/spark_silent/blob/master/sourceCodeParse/img/2.jpg)
+![执行](https://github.com/yueyuanyang/spark_silent/blob/master/sourceCodeParse/img/2.jpg)
 
 注：
 1) hdfs -> textFile 阶段会从hdfs 上读取数据
