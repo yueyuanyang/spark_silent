@@ -35,6 +35,7 @@ spark task类型的划分：（依据shuffle划分）
 ![图解](https://github.com/yueyuanyang/spark_silent/blob/master/sourceCodeParse/img/3.jpg)
 
 宽依赖：父RDD被多个子RDD依赖，即父RDD与子RDD为一对多的关系(groupByKey,join,reduceByKey)
+
 窄依赖：父RDD被一个子RDD依赖，即父RDD与子RDD为一对一的关系(map,filter union)
 
 **重点注意**
@@ -50,9 +51,13 @@ spark task类型的划分：（依据shuffle划分）
 1) DAG 构建的关键： RDD之间有血统关系，即：存在lineage
 - 借助于lineage关系，可以保证它计算时，所依赖的父RDD的计算都完成了
 - 可以很好的容错性，部分失败，可以借助父RDD重新计算
+
 2) stage 划分
+
 stage 根据宽窄依赖进行划分
+
 3) stage 与stage之间的过程
+
 - stage中的一个结束时，要将数据写入本地文件系统（localFileSystem）
 - 下一个stage从上一个stage 的本地文件系统来去数据
 - stage查找文件系统目录：stage可以根据Driver端的MapOutPutTrackMaster跟踪部署
@@ -66,6 +71,21 @@ stage 根据宽窄依赖进行划分
 
 - hashShffle
 - soreShffle
+
+### RDD Iterator中的缓存处理内幕
+
+缓存发现: 通过cacheManager管理，实际上cacheManager通过扫描blockManager,看看有没有缓存
+
+**RDD partition分区**
+
+- 缓存必须有action操作，当有action操作时，会写入blockManager
+- RDD 的每个partition 对应store中的每个blok(partition 通过处理过的数据)
+
+![图](https://github.com/yueyuanyang/spark_silent/blob/master/sourceCodeParse/img/4.jpg)
+
+
+
+
 
 
 
