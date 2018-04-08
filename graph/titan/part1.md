@@ -30,3 +30,11 @@ Titan 是一个在服务器集群搭建的分布式的图形数据库，特别�
  - Frames object-to-graph mapper
  - Rexster graph server
  - Blueprints standard graph API
+
+### 安装部署
+
+| 产品 | 版本 | 环境 
+| - | :-: | -: 
+| titan-1.0.0-hadoop2 | 1.0.0|
+| hbase-1.2.3 | 1.0* |
+| elasticsearch-1.5.2 | 1.0* |
