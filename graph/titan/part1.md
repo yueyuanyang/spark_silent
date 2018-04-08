@@ -42,6 +42,15 @@ Titan 是一个在服务器集群搭建的分布式的图形数据库，特别�
 | hbase-1.2.3 | 1.0* |
 | elasticsearch-1.5.2 | 1.0* |
 
+搭建环境(hbase+es+titan1.0.0-hadoop2为例）
+
+下载安装
+
+- 下载安装titan-1.0-hadoop1http://s3.thinkaurelius.com/downloads/titan/titan-1.0.0-hadoop2.zip
+- 下载安装最新JDKhttp://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html，设置环境变量PATH和CLASSPATH
+- elasticsearch下载1.x版本https://www.elastic.co/downloads/past-releases能够兼容1.x的hbase
+- 下载hbase1.x版本https://mirrors.tuna.tsinghua.edu.cn/apache/hbase/
+
 **步骤一**
 
 1) 删除titan-1.0.0-hadoop2/lib目录下的hadoop-core-1.2.1.jar
