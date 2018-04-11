@@ -61,20 +61,6 @@ Spark的资源参数，基本都可以在spark-submit命令中作为参数设置
 
 + 参数说明：Total cores for all executors.
 
-### 资源参数参考示例
-
-以下是一份spark-submit命令的示例：
-
-| 参数 | 设置 |说明
-| - | - | - |
-| num-executors | 50-100 | num-executors乘以executor-memory，就代表了你的Spark作业申请到的总内存量,一般不超过总队列 cores 的 25%
-| executor-memory |  4G-8G  | 最大不超过 20G，否则会导致 GC 代价过高，或资源浪费严重
-| executor-cores | 2-4 |
-|spark.default.parallelism | num-executors * executor-cores的2~3倍较为合适 | 用于设置每个stage的默认task数量,Spark作业的默认task数量为500~1000个较为合适
-| driver-memory | 1G-2G |
-| spark.shuffle.memoryFraction(也叫 ExecutionMemory) | 默认0.2 | 这片内存区域是为了解决 shuffles,joins, sorts and aggregations 过程中为了避免频繁IO需要的buffer。如果你的程序有大量这类操作可以适当调高
-| spark.storage.memoryFraction(也叫 StorageMemory) | 默认0.6 | 这片内存区域是为了解决 block cache(就是你显示调用dd.cache, rdd.persist等方法), 还有就是broadcasts,以及task results的存储。可以通过参数，如果你大量调用了持久化操作或广播变量，那可以适当调高它
-
 ##### 提交模式
 
 ```
@@ -97,3 +83,42 @@ Spark的资源参数，基本都可以在spark-submit命令中作为参数设置
   --conf spark.storage.memoryFraction=0.5 \
   --conf spark.shuffle.memoryFraction=0.3 \
 ````
+
+### 资源参数参考示例
+
+以下是一份spark-submit命令的示例：
+
+| 参数 | 设置 |说明
+| - | - | - |
+| num-executors | 50-100 | num-executors乘以executor-memory，就代表了你的Spark作业申请到的总内存量,一般不超过总队列 cores 的 25%
+| executor-memory |  4G-8G  | 最大不超过 20G，否则会导致 GC 代价过高，或资源浪费严重
+| executor-cores | 2-4 |
+|spark.default.parallelism | num-executors * executor-cores的2~3倍较为合适 | 用于设置每个stage的默认task数量,Spark作业的默认task数量为500~1000个较为合适
+| driver-memory | 1G-2G |
+| spark.shuffle.memoryFraction(也叫 ExecutionMemory) | 默认0.2 | 这片内存区域是为了解决 shuffles,joins, sorts and aggregations 过程中为了避免频繁IO需要的buffer。如果你的程序有大量这类操作可以适当调高
+| spark.storage.memoryFraction(也叫 StorageMemory) | 默认0.6 | 这片内存区域是为了解决 block cache(就是你显示调用dd.cache, rdd.persist等方法), 还有就是broadcasts,以及task results的存储。可以通过参数，如果你大量调用了持久化操作或广播变量，那可以适当调高它
+
+
+### 参数完整列表
+
+| 参数 | 设置 |说明
+| - | - | - |
+|--master	| master 的地址，提交任务到哪里执行，例如 spark://host:port,  yarn,  local
+|--deploy-mode	| 在本地 (client) 启动 driver 或在 cluster 上启动，默认是 client
+|--class	| 应用程序的主类，仅针对 java 或 scala 应用
+|--name	| 应用程序的名称
+|--jars	| 用逗号分隔的本地 jar 包，设置后，这些 jar 将包含在 driver 和 executor 的 classpath 下
+|--packages |	 包含在driver 和executor 的 classpath 中的 jar 的 maven 坐标
+|--exclude-packages |	 为了避免冲突 而指定不包含的 package
+|--repositories	 | 远程 repository
+|--conf PROP=VALUE	| 指定 spark 配置属性的值，例如 -conf spark.executor.extraJavaOptions="-XX:MaxPermSize=256m"
+|--properties-file	 | 加载的配置文件，默认为 conf/spark-defaults.conf
+|--driver-memory	 | Driver内存，默认 1G
+|--driver-java-options	| 传给 driver 的额外的 Java 选项
+|--driver-library-path	| 传给 driver 的额外的库路径
+|--driver-class-path |	 传给 driver 的额外的类路径
+|--driver-cores	| Driver 的核数，默认是1。在 yarn 或者 standalone 下使用
+|--executor-memory	| 每个 executor 的内存，默认是1G
+|--total-executor-cores	| 所有 executor 总共的核数。仅仅在 mesos 或者 standalone 下使用
+|--num-executors |	 启动的 executor 数量。默认为2。在 yarn 下使用
+|--executor-core	| 每个 executor 的核数。在yarn或者standalone下使用
