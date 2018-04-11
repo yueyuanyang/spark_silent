@@ -66,7 +66,7 @@ Spark的资源参数，基本都可以在spark-submit命令中作为参数设置
 以下是一份spark-submit命令的示例：
 
 | 参数 | 设置 |说明
-| - | :-: | -: |
+| - | - | - |
 | num-executors | 50-100 | num-executors乘以executor-memory，就代表了你的Spark作业申请到的总内存量,这个量是不能超过队列的最大内存量的
 | executor-memory |  4G-8G  |
 | executor-cores | 2-4 |
