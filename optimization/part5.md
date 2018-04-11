@@ -101,7 +101,7 @@ Spark的资源参数，基本都可以在spark-submit命令中作为参数设置
 
 ### 参数完整列表
 
-| 参数 | 设置 |说明
+| 参数 | 设置 |
 | - | - | - |
 |--master	| master 的地址，提交任务到哪里执行，例如 spark://host:port,  yarn,  local
 |--deploy-mode	| 在本地 (client) 启动 driver 或在 cluster 上启动，默认是 client
@@ -111,6 +111,7 @@ Spark的资源参数，基本都可以在spark-submit命令中作为参数设置
 |--packages |	 包含在driver 和executor 的 classpath 中的 jar 的 maven 坐标
 |--exclude-packages |	 为了避免冲突 而指定不包含的 package
 |--repositories	 | 远程 repository
+|--executor-core	|  yarn模式下，队列
 |--conf PROP=VALUE	| 指定 spark 配置属性的值，例如 -conf spark.executor.extraJavaOptions="-XX:MaxPermSize=256m"
 |--properties-file	 | 加载的配置文件，默认为 conf/spark-defaults.conf
 |--driver-memory	 | Driver内存，默认 1G
