@@ -7,7 +7,9 @@
 # 第一部分
 
 ## spark 概念
+
 1.[spark杂记之一 —— Apache Spark RDD 详解](https://github.com/yueyuanyang/spark/blob/master/notes/part2.md)
+
 2.[spark杂记之一 —— Apache Spark 统一内存管理模型详解](https://github.com/yueyuanyang/spark/blob/master/notes/part2.md)
 
 
