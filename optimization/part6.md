@@ -100,6 +100,75 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 |spark.python.worker.reuse | true | 是否复用Python worker。如果是，则每个任务会启动固定数量的Python worker，并且不需要fork() python进程。如果需要广播的数据量很大，设为true能大大减少广播数据量，因为需要广播的进程数减少了。
 
 
+### 混洗行为
+
+
+| 属性名称 | 默认值 | 含义 
+| - | :-: | -: 
+|spark.reducer.maxSizeInFlight | 48m | map任务输出同时reduce任务获取的最大内存占用量。每个输出需要创建buffer来接收，对于每个reduce任务来说，有一个固定的内存开销上限，所以最好别设太大，除非你内存非常大。
+|spark.shuffle.compress | true | 是否压缩map任务的输出文件。通常来说，压缩是个好主意。使用的压缩算法取决于 spark.io.compression.codec
+|spark.shuffle.file.buffer | 32k | 每个混洗输出流的内存buffer大小。这个buffer能减少混洗文件的创建和磁盘寻址。
+|spark.shuffle.io.maxRetries | 3 | （仅对netty）如果IO相关异常发生，重试次数（如果设为非0的话）。重试能是大量数据的混洗操作更加稳定，因为重试可以有效应对长GC暂停或者网络闪断。
+|spark.shuffle.io.numConnectionsPerPeer | 1 | （仅netty）主机之间的连接是复用的，这样可以减少大集群中重复建立连接的次数。然而，有些集群是机器少，磁盘多，这种集群可以考虑增加这个参数值，以便充分利用所有磁盘并发性能。
+|spark.shuffle.io.preferDirectBufs | true | （仅netty）堆外缓存可以有效减少垃圾回收和缓存复制。对于堆外内存紧张的用户来说，可以考虑禁用这个选项，以迫使netty所有内存都分配在堆上。
+|spark.shuffle.io.retryWait | 5s | （仅netty）混洗重试获取数据的间隔时间。默认最大重试延迟是15秒，设置这个参数后，将变成maxRetries* retryWait。
+|spark.shuffle.manager | sort | 混洗数据的实现方式。可用的有”sort”和”hash“。基于排序（sort）的混洗内存利用率更高，并且从1.2开始已经是默认值了。
+|spark.shuffle.service.enabled | false | 启用外部混洗服务。启用外部混洗服务后，执行器生成的混洗中间文件就由该服务保留，这样执行器就可以安全的退出了。如果 spark.dynamicAllocation.enabled启用了，那么这个参数也必须启用，这样动态分配才能有外部混洗服务可用。
+|spark.shuffle.service.port | 7337 | 外部混洗服务对应端口
+|spark.shuffle.sort.bypassMergeThreshold | 200 | （高级）在基于排序（sort）的混洗管理器中，如果没有map端聚合的话，就会最多存在这么多个reduce分区。
+|spark.shuffle.spill.compress | true | 是否在混洗阶段压缩溢出到磁盘的数据。压缩算法取决于spark.io.compression.codec
+
+
+### Spark UI
+
+| 属性名称 | 默认值 | 含义 
+| - | :-: | -: 
+|spark.eventLog.compress | false | 是否压缩事件日志（当然spark.eventLog.enabled必须开启）
+|spark.eventLog.dir | file:///tmp/spark-events | Spark events日志的基础目录（当然spark.eventLog.enabled必须开启）。在这个目录中，spark会给每个应用创建一个单独的子目录，然后把应用的events log打到子目录里。用户可以设置一个统一的位置（比如一个HDFS目录），这样history server就可以从这里读取历史文件。
+|spark.eventLog.enabled | false | 是否启用Spark事件日志。如果Spark应用结束后，仍需要在SparkUI上查看其状态，必须启用这个。
+|spark.ui.killEnabled | true | 允许从SparkUI上杀掉stage以及对应的作业（job）
+|spark.ui.port | 4040 | SparkUI端口，展示应用程序运行状态。
+|spark.ui.retainedJobs | 1000 | SparkUI和status API最多保留多少个spark作业的数据（当然是在垃圾回收之前）
+|spark.ui.retainedStages | 1000 | SparkUI和status API最多保留多少个spark步骤（stage）的数据（当然是在垃圾回收之前）
+|spark.worker.ui.retainedExecutors | 1000 | SparkUI和status API最多保留多少个已结束的执行器（executor）的数据（当然是在垃圾回收之前）
+|spark.worker.ui.retainedDrivers | 1000 | SparkUI和status API最多保留多少个已结束的驱动器（driver）的数据（当然是在垃圾回收之前）
+|spark.sql.ui.retainedExecutions | 1000 | SparkUI和status API最多保留多少个已结束的执行计划（execution）的数据（当然是在垃圾回收之前）
+|spark.streaming.ui.retainedBatches | 1000 | SparkUI和status API最多保留多少个已结束的批量（batch）的数据（当然是在垃圾回收之前）
+
+
+### 压缩和序列化
+
+| 属性名称 | 默认值 | 含义 
+| - | :-: | -: 
+|spark.broadcast.compress | true | 是否在广播变量前使用压缩。通常是个好主意。
+|spark.closure.serializer | org.apache.spark.serializer.JavaSerializer | 闭包所使用的序列化类。目前只支持Java序列化。
+|spark.io.compression.codec | snappy | 内部数据使用的压缩算法，如：RDD分区、广播变量、混洗输出。Spark提供了3中算法：lz4，lzf，snappy。你也可以使用全名来指定压缩算法：org.apache.spark.io.LZ4CompressionCodec,org.apache.spark.io.LZFCompressionCodec,org.apache.spark.io.SnappyCompressionCodec.
+|spark.io.compression.lz4.blockSize | 32k | LZ4算法使用的块大小。当然你需要先使用LZ4压缩。减少块大小可以减少混洗时LZ4算法占用的内存量。
+|spark.io.compression.snappy.blockSize | 32k | Snappy算法使用的块大小（先得使用Snappy算法）。减少块大小可以减少混洗时Snappy算法占用的内存量。
+|spark.kryo.classesToRegister | (none) | 如果你使用Kryo序列化，最好指定这个以提高性能（tuning guide）。本参数接受一个逗号分隔的类名列表，这些类都会注册为Kryo可序列化类型。
+|spark.kryo.referenceTracking | true (false when using Spark SQL Thrift Server) | 是否跟踪同一对象在Kryo序列化的引用。如果你的对象图中有循环护着包含统一对象的多份拷贝，那么最好启用这个。如果没有这种情况，那就禁用以提高性能。
+|spark.kryo.registrationRequired | false | Kryo序列化时，是否必须事先注册。如果设为true，那么Kryo遇到没有注册过的类型，就会抛异常。如果设为false（默认）Kryo会序列化未注册类型的对象，但会有比较明显的性能影响，所以启用这个选项，可以强制必须在序列化前，注册可序列化类型。
+|spark.kryo.registrator | (none) | 如果你使用Kryo序列化，用这个class来注册你的自定义类型。如果你需要自定义注册方式，这个参数很有用。否则，使用 spark.kryo.classesRegister更简单。要设置这个参数，需要用KryoRegistrator的子类。详见：tuning guide 。
+|spark.kryoserializer.buffer.max | 64m | 最大允许的Kryo序列化buffer。必须必你所需要序列化的对象要大。如果你在Kryo中看到”buffer limit exceeded”这个异常，你就得增加这个值了。
+|spark.kryoserializer.buffer | 64k | Kryo序列化的初始buffer大小。注意，每台worker上对应每个core会有一个buffer。buffer最大增长到 spark.kryoserializer.buffer.max
+|spark.rdd.compress | false | 是否压缩序列化后RDD的分区（如：StorageLevel.MEMORY_ONLY_SER）。能节省大量空间，但多消耗一些CPU。
+|spark.serializer | org.apache.spark.serializer.JavaSerializer (org.apache.spark.serializer.KryoSerializer when using Spark SQL Thrift Server) | 用于序列化对象的类，序列化后的数据将通过网络传输，或从缓存中反序列化回来。默认的Java序列化使用java的Serializable接口，但速度较慢，所以我们建议使用usingorg.apache.spark.serializer.KryoSerializer and configuring Kryo serialization如果速度需要保证的话。当然你可以自定义一个序列化器，通过继承org.apache.spark.Serializer.
+|spark.serializer.objectStreamReset | 100 | 如果使用org.apache.spark.serializer.JavaSerializer做序列化器，序列化器缓存这些对象，以避免输出多余数据，然而，这个会打断垃圾回收。通过调用reset来flush序列化器，从而使老对象被回收。要禁用这一周期性reset，需要把这个参数设为-1，。默认情况下，序列化器会每过100个对象，被reset一次。
+
+### 内存管理
+
+| 属性名称 | 默认值 | 含义 
+| - | :-: | -: 
+|spark.memory.fraction | 0.75 | 堆内存中用于执行、混洗和存储（缓存）的比例。这个值越低，则执行中溢出到磁盘越频繁，同时缓存被逐出内存也更频繁。这个配置的目的，是为了留出用户自定义数据结构、内部元数据使用的内存。推荐使用默认值。请参考this description.
+|spark.memory.storageFraction | 0.5 | 不会被逐出内存的总量，表示一个相对于 spark.memory.fraction的比例。这个越高，那么执行混洗等操作用的内存就越少，从而溢出磁盘就越频繁。推荐使用默认值。更详细请参考 this description.
+|spark.memory.offHeap.enabled | true | 如果true，Spark会尝试使用堆外内存。启用 后，spark.memory.offHeap.size必须为正数。
+|spark.memory.offHeap.size | 0 | 堆外内存分配的大小（绝对值）。这个设置不会影响堆内存的使用，所以你的执行器总内存必须适应JVM的堆内存大小。必须要设为正数。并且前提是 spark.memory.offHeap.enabled=true.
+|spark.memory.useLegacyMode | false | 是否使用老式的内存管理模式（1.5以及之前）。老模式在堆内存管理上更死板，使用固定划分的区域做不同功能，潜在的会导致过多的数据溢出到磁盘（如果不小心调整性能）。必须启用本参数，以下选项才可用：spark.shuffle.memoryFractionspark.storage.memoryFractionspark.storage.unrollFraction
+|spark.shuffle.memoryFraction | 0.2 | （废弃）必须先启用spark.memory.useLegacyMode这个才有用。混洗阶段用于聚合和协同分组的JVM堆内存比例。在任何指定的时间，所有用于混洗的内存总和不会超过这个上限，超出的部分会溢出到磁盘上。如果溢出台频繁，考虑增加spark.storage.memoryFraction的大小。
+|spark.storage.memoryFraction | 0.6 | （废弃）必须先启用spark.memory.useLegacyMode这个才有用。Spark用于缓存数据的对内存比例。这个值不应该比JVM 老生代（old generation）对象所占用的内存大，默认是60%的堆内存，当然你可以增加这个值，同时配置你所用的老生代对象占用内存大小。
+|spark.storage.unrollFraction | 0.2 | （废弃）必须先启用spark.memory.useLegacyMode这个才有用。Spark块展开的内存占用比例。如果没有足够的内存来完整展开新的块，那么老的块将被抛弃。
+
+
 
 
 
