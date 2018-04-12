@@ -69,8 +69,10 @@ Transformation 操作不是马上提交 Spark 集群执行的,Spark 在遇到 Tr
 
 ```
 OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformations 和 actions是什么？ 
+
 **lineage**:
 
+![p8](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/p8.md)
 
 
 
