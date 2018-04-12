@@ -183,7 +183,7 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 |spark.hadoop.validateOutputSpecs | true | 如设为true，在saveAsHadoopFile及其变体的时候，将会验证输出（例如，检查输出目录是否存在）。对于已经验证过或确认存在输出目录的情况，可以禁用这个。我们建议不要禁用，除非你确定需要和之前的spark版本兼容。可以简单的利用Hadoop 文件系统API手动删掉已存在的输出目录。这个设置会被Spark Streaming StreamingContext生成的job忽略，因为Streaming需要在回复检查点的时候，覆盖已有的输出目录。
 |spark.storage.memoryMapThreshold | 2m | spark从磁盘上读取一个块后，映射到内存块的最小大小。这阻止了spark映射过小的内存块。通常，内存映射块是有开销的，应该比接近或小于操作系统的页大小。
 |spark.externalBlockStore.blockManager | org.apache.spark.storage.TachyonBlockManager | 用于存储RDD的外部块管理器（文件系统）的实现。文件系统URL由spark.externalBlockStore.url决定。
-|spark.externalBlockStore.baseDir | System.getProperty(“java.io.tmpdir”) | 外部块存储存放RDD的目录。文件系统URL由spark.externalBlockStore.url决定。也可以是逗号分隔的目录列表（Tachyon文件系统）
+|spark.externalBlockStore.baseDir | System.getProperty(“java.io.tmpdir”) | 外部块存储存放RDD的目录。文件系统URLspark.externalBlockStore.url决定。也可以是逗号分隔的目录列表（Tachyon文件系统）
 |spark.externalBlockStore.url | tachyon://localhost:19998 for Tachyon | 所使用的外部块存储文件系统URL。
 
 ### 网络
