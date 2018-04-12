@@ -74,7 +74,7 @@ OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformatio
 
 **lineage**:
 
-![p8](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/t8.md)
+![p8](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/t8.png)
 
 在上面查询大于30岁人查询里，我们最开始得出去掉标题行所对应的RDD lines，即为withTitleLines，接着对withTitleLines进行map操作分割每行数据内容，之后再次进行过滤age大于30岁的人、最后进行count(统计所有记录)。Spark的调度器会对最后的那个两个变换操作流水线化，并发送一组任务给那些保存了lineOfData对应的缓存分区的节点。另外，如果lineOfData的某个分区丢失，Spark将只在该分区对应的那些行上执行原来的split操作即可恢复该分区。 
 
@@ -102,7 +102,7 @@ OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformatio
 
 当用户对一个RDD执行action(如count 或save)操作时， 调度器会根据该RDD的lineage，来构建一个由若干阶段(stage) 组成的一个DAG(有向无环图)以执行程序，如下图所示。 
 
-![t9](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/t9.md)
+![t9](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/t9.png)
 
 每个stage都包含尽可能多的连续的窄依赖型转换。各个阶段之间的分界则是宽依赖所需的shuffle操作，或者是DAG中一个经由该分区能更快到达父RDD的已计算分区。之后，调度器运行多个任务来计算各个阶段所缺失的分区，直到最终得出目标RDD。 
 调度器向各机器的任务分配采用延时调度机制并根据数据存储位置(本地性)来确定。若一个任务需要处理的某个分区刚好存储在某个节点的内存中，则该任务会分配给那个节点。否则，如果一个任务处理的某个分区，该分区含有的RDD提供较佳的位置(例如，一个HDFS文件)，我们把该任务分配到这些位置。 
