@@ -44,9 +44,6 @@
 10. [spark graph 操作09 —— Pregel学习](https://github.com/yueyuanyang/spark/blob/master/graph/part10.md)
 11. [spark graph 操作10 —— GraphFrame学习(类Sql第三方库)](https://github.com/yueyuanyang/spark/blob/master/graph/part11.md)
 
-## 图数据库
-1. [titan - 安装及配置]()
-
 # 第N部分
 ## spark性能优化
 1. [最优化spark应用的性能](https://github.com/yueyuanyang/spark/blob/master/optimization/part1.md)
