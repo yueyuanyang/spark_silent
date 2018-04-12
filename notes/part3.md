@@ -30,5 +30,53 @@ RDD会记录它的依赖 ，为了容错（重算，cache，checkpoint），也�
   
 - Optionally, a list of preferred locations to compute each split on
 
-最优的位置去计算，也就是数据的本地性。      
+最优的位置去计算，也就是数据的本地性。
+
+### spark RDD 
+
+#### RDD 的创建方式主要有2种: 
+
+- 并行化(Parallelizing)一个已经存在与驱动程序(Driver Program)中的集合如set、list; 
+- 读取外部存储系统上的一个数据集，比如HDFS、Hive、HBase,或者任何提供了Hadoop InputFormat的数据源.也可以从本地读取 txt、csv 等数据集
+
+#### RDD 的操作函数
+
+RDD 的操作函数(operation)主要分为2种类型 Transformation 和 Action.
+
+| 类别 | 函数 | 区别 
+| - | :-: | -: 
+| Transformation | Map,filter,groupBy,join, union,reduce,sort,partitionBy | `返回值还是 RDD`,不会马上 提交 Spark 集群运行
+| Action | count,collect,take,save, show | `返回值不是 RDD`,会形成 DAG 图,提交 Spark 集群运行 并立即返回结果
+
+Transformation 操作不是马上提交 Spark 集群执行的,Spark 在遇到 Transformation 操作时只会记录需要这样的操作,并不会去执行,需要等到有 Action 操作的时候才会真正启动计算过程进行计算.针对每个 Action,Spark 会生成一个 Job, 从数据的创建开始,经过 Transformation, 结尾是 Action 操作.这些操作对应形成一个有向无环图(DAG),形成 DAG 的先决条件是最后的函数操作是一个Action. 
+
+```
+ //1.定义了以一个HDFS文件（由数行文本组成）为基础的RDD
+ val lines = sc.textFile("/data/spark/bank/bank.csv")
+ //2.因为首行是文件的标题，我们想把首行去掉，返回新RDD是withoutTitleLines
+ val withoutTitleLines = lines.filter(!_.contains("age"))
+ //3.将每行数据以；分割下，返回名字是lineOfData的新RDD
+ val lineOfData = withoutTitleLines.map(_.split(";"))
+ //4.将lineOfData缓存到内存到，并设置缓存名称是lineOfData
+ lineOfData.setName("lineOfData")
+ lineOfData.persist
+ //5.获取大于30岁的数据，返回新RDD是gtThirtyYearsData
+ val gtThirtyYearsData = lineOfData.filter(line => line(0).toInt > 30)
+ //到此，集群上还没有工作被执行。但是，用户现在已经可以在动作(action)中使用RDD。
+ //计算大于30岁的有多少人
+ gtThirtyYearsData.count
+ //返回结果是3027
+
+```
+OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformations 和 actions是什么？ 
+**lineage**:
+
+
+
+
+
+
+
+
+
 
