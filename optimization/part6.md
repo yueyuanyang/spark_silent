@@ -61,10 +61,10 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 
 绝大多数属性都有合理的默认值。这里是部分常用的选项：
 
-应用属性
+### 应用属性
 
 | 属性名称 | 默认值 | 含义 
-| - | :-: | -: 
+| - | - | - |
 |spark.app.name	| (none) |	Spark应用的名字。会在SparkUI和日志中出现。
 |spark.driver.cores	| 1	| 在cluster模式下，用几个core运行驱动器（driver）进程。
 |spark.driver.maxResultSize	| 1g |	Spark action算子返回的结果最大多大。至少要1M，可以设为0表示无限制。如果结果超过这一大小，Spark作业（job）会直接中断退出。但是，设得过高有可能导致驱动器OOM（out-of-memory）（取决于spark.driver.memory设置，以及驱动器JVM的内存限制）。设一个合理的值，以避免驱动器OOM。
@@ -80,7 +80,7 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 ### 运行时环境
 
 | 属性名称 | 默认值 | 含义 
-| - | :-: | -: 
+| - | - | - |
 |spark.driver.extraClassPath | (none) | 额外的classpath，将插入到到驱动器的classpath开头。注意：驱动器如果运行客户端模式下，这个配置不能通过SparkConf 在程序里配置，因为这时候程序已经启动呀！而是应该用命令行参数（–driver-class-path）或者在 conf/spark-defaults.conf 配置。
 |spark.driver.extraJavaOptions | (none) | 驱动器额外的JVM选项。如：GC设置或其他日志参数。注意：驱动器如果运行客户端模式下，这个配置不能通过SparkConf在程序里配置，因为这时候程序已经启动呀！而是应该用命令行参数（–driver-java-options）或者conf/spark-defaults.conf 配置。
 |spark.driver.extraLibraryPath | (none) | 启动驱动器JVM时候指定的依赖库路径。注意：驱动器如果运行客户端模式下，这个配置不能通过SparkConf在程序里配置，因为这时候程序已经启动呀！而是应该用命令行参数（–driver-library-path）或者conf/spark-defaults.conf 配置。
@@ -102,9 +102,8 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 
 ### 混洗行为
 
-
 | 属性名称 | 默认值 | 含义 
-| - | :-: | -: 
+| - | - | - |
 |spark.reducer.maxSizeInFlight | 48m | map任务输出同时reduce任务获取的最大内存占用量。每个输出需要创建buffer来接收，对于每个reduce任务来说，有一个固定的内存开销上限，所以最好别设太大，除非你内存非常大。
 |spark.shuffle.compress | true | 是否压缩map任务的输出文件。通常来说，压缩是个好主意。使用的压缩算法取决于 spark.io.compression.codec
 |spark.shuffle.file.buffer | 32k | 每个混洗输出流的内存buffer大小。这个buffer能减少混洗文件的创建和磁盘寻址。
@@ -122,7 +121,7 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 ### Spark UI
 
 | 属性名称 | 默认值 | 含义 
-| - | :-: | -: 
+| - | - | - |
 |spark.eventLog.compress | false | 是否压缩事件日志（当然spark.eventLog.enabled必须开启）
 |spark.eventLog.dir | file:///tmp/spark-events | Spark events日志的基础目录（当然spark.eventLog.enabled必须开启）。在这个目录中，spark会给每个应用创建一个单独的子目录，然后把应用的events log打到子目录里。用户可以设置一个统一的位置（比如一个HDFS目录），这样history server就可以从这里读取历史文件。
 |spark.eventLog.enabled | false | 是否启用Spark事件日志。如果Spark应用结束后，仍需要在SparkUI上查看其状态，必须启用这个。
@@ -139,7 +138,7 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 ### 压缩和序列化
 
 | 属性名称 | 默认值 | 含义 
-| - | :-: | -: 
+| - | - | - |
 |spark.broadcast.compress | true | 是否在广播变量前使用压缩。通常是个好主意。
 |spark.closure.serializer | org.apache.spark.serializer.JavaSerializer | 闭包所使用的序列化类。目前只支持Java序列化。
 |spark.io.compression.codec | snappy | 内部数据使用的压缩算法，如：RDD分区、广播变量、混洗输出。Spark提供了3中算法：lz4，lzf，snappy。你也可以使用全名来指定压缩算法：org.apache.spark.io.LZ4CompressionCodec,org.apache.spark.io.LZFCompressionCodec,org.apache.spark.io.SnappyCompressionCodec.
@@ -158,7 +157,7 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 ### 内存管理
 
 | 属性名称 | 默认值 | 含义 
-| - | :-: | -: 
+| - | - | - |
 |spark.memory.fraction | 0.75 | 堆内存中用于执行、混洗和存储（缓存）的比例。这个值越低，则执行中溢出到磁盘越频繁，同时缓存被逐出内存也更频繁。这个配置的目的，是为了留出用户自定义数据结构、内部元数据使用的内存。推荐使用默认值。请参考this description.
 |spark.memory.storageFraction | 0.5 | 不会被逐出内存的总量，表示一个相对于 spark.memory.fraction的比例。这个越高，那么执行混洗等操作用的内存就越少，从而溢出磁盘就越频繁。推荐使用默认值。更详细请参考 this description.
 |spark.memory.offHeap.enabled | true | 如果true，Spark会尝试使用堆外内存。启用 后，spark.memory.offHeap.size必须为正数。
