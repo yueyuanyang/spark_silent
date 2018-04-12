@@ -1,34 +1,34 @@
 
-# 目录
+## 目录
 
-## spark 杂记
+### spark 杂记
 1.[spark杂记之一 —— 如何设置spark日志的打印级别](https://github.com/yueyuanyang/spark/blob/master/notes/part1.md)
 
-# 第一部分
+## 第一部分
 
-## spark 概念
+### spark 概念
 
 1.[spark杂记之一 —— Apache Spark RDD 详解](https://github.com/yueyuanyang/spark/blob/master/notes/part2.md)
 
 2.[spark杂记之一 —— Apache Spark 统一内存管理模型详解](https://github.com/yueyuanyang/spark/blob/master/notes/part2.md)
 
 
-# 第二部分 
-## spark-core
-### Action操作
+## 第二部分 
+### spark-core
+#### Action操作
 1. [Spark RDD行动Action操作(1) – first、count、reduce、collect、take、top、takeOrdered](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part1.md)
 2. [Spark RDD行动Action操作(2) - aggregate、fold、lookup、countByKey、foreach、foreachPartition、sortBy](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part2.md)
 3. [Spark RDD行动Action操作(3) - saveAsNewAPIHadoopFile、saveAsNewAPIHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part4.md)
 4. [Spark RDD行动Action操作(4) - saveAsTextFile、saveAsSequenceFile、saveAsObjectFile、saveAsHadoopFile、saveAsHadoopDataset](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part3.md)
 
-### Transformation操作
+#### Transformation操作
 1. [Spark RDD行动Transformation操作(1) - map、flatMap、distinct、coalesce、repartition](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part5.md)
 2. [Spark RDD行动Transformation操作(2) -  randomSplit、glom、union、intersection、subtract](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part6.md)
 3. [Spark RDD行动Transformation操作(3) - mapPartitions、mapPartitionsWithIndex](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part7.md)
 4. [Spark RDD行动Transformation操作(5) - zip、zipPartitions、zipWithIndex、zipWithUniqueId](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part8.md)
 5. [Spark RDD行动Transformation操作(6) - parallelize、makeRDD](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part9.md)
 
-### 键值转换
+#### 键值转换
 
 1. [Spark RDD行动键值操作(1) - partitionBy、mapValues、flatMapValues](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part10.md)
 2. [Spark RDD行动键值操作(1) - combineByKey、foldByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part11.md)
@@ -37,8 +37,8 @@
 5. [Spark RDD行动键值操作(1) - leftOuterJoin、rightOuterJoin、subtractByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part15.md)
 
 
-# 第二部分 
-## spark graph(图计算)
+## 第二部分 
+### spark graph(图计算)
 1. [spark graph 构建graph和聚合消息](https://github.com/yueyuanyang/spark/blob/master/graph/part1.md)
 2. [spark graph 操作01 —— edgeListFile导入数据](https://github.com/yueyuanyang/spark/blob/master/graph/part2.md)
 3. [spark graph 操作02 —— joinVertices](https://github.com/yueyuanyang/spark/blob/master/graph/part3.md)
@@ -51,8 +51,8 @@
 10. [spark graph 操作09 —— Pregel学习](https://github.com/yueyuanyang/spark/blob/master/graph/part10.md)
 11. [spark graph 操作10 —— GraphFrame学习(类Sql第三方库)](https://github.com/yueyuanyang/spark/blob/master/graph/part11.md)
 
-# 第N部分
-## spark性能优化
+## 第N部分
+### spark性能优化
 1. [最优化spark应用的性能](https://github.com/yueyuanyang/spark/blob/master/optimization/part1.md)
 2. [Spark性能优化指南——基础篇](https://github.com/yueyuanyang/spark/blob/master/optimization/part2.md)
 3. [Spark性能优化指南——高级篇](https://github.com/yueyuanyang/spark/blob/master/optimization/part3.md)
@@ -60,8 +60,8 @@
 5. [spark submit参数调优](https://github.com/yueyuanyang/spark/blob/master/optimization/part5.md)
 6. [spark 配置详解列表](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/part6.md)
 
-# 第N+1部分
-## spark 操作篇
+## 第N+1部分
+### spark 操作篇
 
 [1. spark 优雅的操作redis](https://github.com/yueyuanyang/spark_silent/blob/master/operation/part1.md)
 
