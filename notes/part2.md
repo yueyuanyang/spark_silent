@@ -16,8 +16,6 @@ Spark 能够有效的利用内存并进行分布式计算，其内存管理模�
 
 ![t1](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/t1.png)
 
-如果想及时了解Spark、Hadoop或者Hbase相关的文章，欢迎关注微信公共帐号：iteblog_hadoop
-
 我们对上图进行以下说明：
 
 - systemMemory = Runtime.getRuntime.maxMemory，其实就是通过参数 spark.executor.memory 或 --executor-memory 配置的。
