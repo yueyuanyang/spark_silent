@@ -75,6 +75,32 @@ spark.serializer        org.apache.spark.serializer.KryoSerializer
 |spark.logConf |	false	| SparkContext启动时是否把生效的 SparkConf 属性以INFO日志打印到日志里
 |spark.master	| (none)	| 集群管理器URL。参考allowed master URL’s.
 
+除了这些以外，以下还有很多可用的参数配置，在某些特定情形下，可能会用到：
+
+### 运行时环境
+
+| 属性名称 | 默认值 | 含义 
+| - | :-: | -: 
+|spark.driver.extraClassPath | (none) | 额外的classpath，将插入到到驱动器的classpath开头。注意：驱动器如果运行客户端模式下，这个配置不能通过SparkConf 在程序里配置，因为这时候程序已经启动呀！而是应该用命令行参数（–driver-class-path）或者在 conf/spark-defaults.conf 配置。
+|spark.driver.extraJavaOptions | (none) | 驱动器额外的JVM选项。如：GC设置或其他日志参数。注意：驱动器如果运行客户端模式下，这个配置不能通过SparkConf在程序里配置，因为这时候程序已经启动呀！而是应该用命令行参数（–driver-java-options）或者conf/spark-defaults.conf 配置。
+|spark.driver.extraLibraryPath | (none) | 启动驱动器JVM时候指定的依赖库路径。注意：驱动器如果运行客户端模式下，这个配置不能通过SparkConf在程序里配置，因为这时候程序已经启动呀！而是应该用命令行参数（–driver-library-path）或者conf/spark-defaults.conf 配置。
+|spark.driver.userClassPathFirst | false | (试验性的：即未来不一定会支持该配置) 驱动器是否首选使用用户指定的jars，而不是spark自身的。这个特性可以用来处理用户依赖和spark本身依赖项之间的冲突。目前还是试验性的，并且只能用在集群模式下。
+|spark.executor.extraClassPath | (none) | 添加到执行器（executor）classpath开头的classpath。主要为了向后兼容老的spark版本，不推荐使用。
+|spark.executor.extraJavaOptions | (none) | 传给执行器的额外JVM参数。如：GC设置或其他日志设置等。注意，不能用这个来设置Spark属性或者堆内存大小。Spark属性应该用SparkConf对象，或者spark-defaults.conf文件（会在spark-submit脚本中使用）来配置。执行器堆内存大小应该用 spark.executor.memory配置。
+|spark.executor.extraLibraryPath | (none) | 启动执行器JVM时使用的额外依赖库路径。
+|spark.executor.logs.rolling.maxRetainedFiles | (none) | Sets the number of latest rolling log files that are going to be retained by the system. Older log files will be deleted. Disabled by default.设置日志文件最大保留个数。老日志文件将被干掉。默认禁用的。
+|spark.executor.logs.rolling.maxSize | (none) | 设置执行器日志文件大小上限。默认禁用的。需要自动删日志请参考 spark.executor.logs.rolling.maxRetainedFiles.
+|spark.executor.logs.rolling.strategy | (none) | 执行器日志滚动策略。默认禁用。可接受的值有”time”（基于时间滚动） 或者 “size”（基于文件大小滚动）。time：将使用 spark.executor.logs.rolling.time.interval设置滚动时间间隔size：将使用 spark.executor.logs.rolling.size.maxBytes设置文件大小上限
+|spark.executor.logs.rolling.time.interval | daily | 设置执行器日志滚动时间间隔。日志滚动默认是禁用的。可用的值有 “daily”, “hourly”, “minutely”，也可设为数字（则单位为秒）。关于日志自动清理，请参考 spark.executor.logs.rolling.maxRetainedFiles
+|spark.executor.userClassPathFirst | false | （试验性的）与 spark.driver.userClassPathFirst类似，只不过这个参数将应用于执行器
+|spark.executorEnv.[EnvironmentVariableName] | (none) | 向执行器进程增加名为EnvironmentVariableName的环境变量。用户可以指定多个来设置不同的环境变量。
+|spark.python.profile | false | 对Python worker启用性能分析，性能分析结果会在sc.show_profile()中，或者在驱动器退出前展示。也可以用sc.dump_profiles(path)输出到磁盘上。如果部分分析结果被手动展示过，那么驱动器退出前就不再自动展示了。默认会使用pyspark.profiler.BasicProfiler，也可以自己传一个profiler 类参数给SparkContext构造函数。
+|spark.python.profile.dump | (none) | 这个目录是用来在驱动器退出前，dump性能分析结果。性能分析结果会按RDD分别dump。同时可以使用ptats.Stats()来装载。如果制定了这个，那么分析结果就不再自动展示。
+|spark.python.worker.memory | 512m | 聚合时每个python worker使用的内存总量，和JVM的内存字符串格式相同（如，512m，2g）。如果聚合时使用的内存超过这个量，就将数据溢出到磁盘上。
+|spark.python.worker.reuse | true | 是否复用Python worker。如果是，则每个任务会启动固定数量的Python worker，并且不需要fork() python进程。如果需要广播的数据量很大，设为true能大大减少广播数据量，因为需要广播的进程数减少了。
+
+
+
 
 
 
