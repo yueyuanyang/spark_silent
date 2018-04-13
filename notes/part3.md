@@ -50,12 +50,12 @@ RDD会记录它的依赖 ，为了容错（重算，cache，checkpoint），也�
 
 ### spark RDD 
 
-#### RDD 的创建方式主要有2种: 
+#### 1.RDD 的创建方式主要有2种: 
 
 - 并行化(Parallelizing)一个已经存在与驱动程序(Driver Program)中的集合如set、list; 
 - 读取外部存储系统上的一个数据集，比如HDFS、Hive、HBase,或者任何提供了Hadoop InputFormat的数据源.也可以从本地读取 txt、csv 等数据集
 
-#### RDD 的操作函数
+#### 2.RDD 的操作函数
 
 RDD 的操作函数(operation)主要分为2种类型 Transformation 和 Action.
 
@@ -98,7 +98,7 @@ OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformatio
 
 所以在spark计算时，当前RDD不可用时，可以根据父RDD重新计算当前RDD数据，但如果父RDD不可用时，可以可以父RDD的父RDD重新计算父RDD。
 
-#### RDDs依赖关系
+#### 3.RDDs依赖关系
 
 **1. 在spark中如何表示RDD之间的依赖关系分为两类**： 
 
@@ -116,7 +116,7 @@ OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformatio
 
 对于map：在任何一个RDD上调用map操作将返回一个MappedRDD对象。这个对象与其父对象具有相同的分区以及首选地点（preferredLocations），但在其迭代方法（iterator）中，传递给map的函数会应用到父对象记录。 
 
-#### 作业调度
+#### 4.作业调度
 
 当用户对一个RDD执行action(如count 或save)操作时， 调度器会根据该RDD的lineage，来构建一个由若干阶段(stage) 组成的一个DAG(有向无环图)以执行程序，如下图所示。 
 
@@ -131,14 +131,14 @@ OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformatio
 实线圆角方框标识的是RDD。阴影背景的矩形是分区，若已存于内存中则用黑色背景标识。RDD G 上一个action的执行将会以宽依赖为分区来构建各个stage，对各stage内部的窄依赖则前后连接构成流水线。在本例中，stage 1 的输出已经存在RAM中，所以直接执行 stage 2 ，然后stage 3。
 
 
-#### 内存管理
+#### 5.内存管理
 
 Spark提供了三种对持久化RDD的存储策略：未序列化Java对象存于内存中、序列化后的数据存于内存及磁盘存储。第一个选项的性能表现是最优秀的，因为可以直接访问在JAVA虚拟机内存里的RDD对象。在空间有限的情况下，第二种方式可以让用户采用比JAVA对象图更有效的内存组织方式，代价是降低了性能。第三种策略适用于RDD太大难以存储在内存的情形，但每次重新计算该RDD会带来额外的资源开销。
 
 对于有限可用内存，Spark使用以RDD为对象的LRU回收算法来进行管理。当计算得到一个新的RDD分区，但却没有足够空间来存储它时，系统会从最近最少使用的RDD中回收其一个分区的空间。除非该RDD便是新分区对应的RDD，这种情况下，Spark会将旧的分区继续保留在内存，防止同一个RDD的分区被循环调入调出。因为大部分的操作会在一个RDD的所有分区上进行，那么很有可能已经存在内存中的分区将会被再次使用。
 
 
-#### 7.检查点支持(checkpoint) 
+#### 6.检查点支持(checkpoint) 
 
 虽然lineage可用于错误后RDD的恢复，但对于很长的lineage的RDD来说，这样的恢复耗时较长。因此，将某些RDD进行检查点操作(Checkpoint)保存到稳定存储上，是有帮助的。 
 
