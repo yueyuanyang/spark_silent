@@ -38,7 +38,9 @@ val shuffleMgrName = conf.get("spark.shuffle.manager", "sort")
 上述源码说明，你可以在Spark配置文件中配置Spark框架运行时要使用的具体的ShuffleManager的实现。可以在conf/spark-default.conf加入如下内容： 
 spark.shuffle.manager SORT 配置Shuffle方式是SORT.
 
-4. Sort-based Shuffle的工作方式如下：Shuffle的目的就是：数据分类，然后数据聚集。 
+4. Sort-based Shuffle的工作方式如下：
+
+**Shuffle的目的就是**：数据分类，然后数据聚集。 
 
 ![t12](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/t12.png)
 
