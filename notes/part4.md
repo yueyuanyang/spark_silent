@@ -48,12 +48,16 @@ spark.shuffle.manager SORT 配置Shuffle方式是SORT.
 
 2) 基于Sort-base的Shuffle会在Mapper中的每一个ShuffleMapTask中产生两个文件：Data文件和Index文件，其中Data文件是存储当前Task的Shuffle输出的。而index文件中则存储了Data文件中的数据通过Partitioner的分类信息，此时下一个阶段的Stage中的Task就是根据这个Index文件获取自己所要抓取的上一个Stage中的ShuffleMapTask产生的数据的，Reducer就是根据index文件来获取属于自己的数据。 
 
-涉及问题：Sorted-based Shuffle：会产生 2 x M(M代表了Mapper阶段中并行的Partition的总数量，其实就是ShuffleMapTask的总数量)个Shuffle临时文件。 
+**涉及问题：Sorted-based Shuffle：**
+
+会产生 2 x M(M代表了Mapper阶段中并行的Partition的总数量，其实就是ShuffleMapTask的总数量)个Shuffle临时文件。 
 
 **Shuffle产生的临时文件的数量的变化一次为**： 
 
 **Basic Hash Shuffle:** M x R; 
+
 **Consalidate方式的Hash Shuffle:** C x R; 
+
 **Sort-based Shuffle:**  2 x M; 
 
 ---
