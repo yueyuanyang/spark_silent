@@ -1,3 +1,14 @@
+####  Spark shuffle 机制之—— Sort-Based Shuffle 介绍
+#### 1.为什么需要Sort-Based Shuffle? 
+
+1.Shuffle一般包含两个阶段任务： 
+- 第一部分：产生Shuffle数据的阶段(Map阶段，额外补充，需要实现ShuffleManager中的getWriter来写数据(数据可以通过BlockManager写到Memory，Disk，Tachyon等，例如想非常快的Shuffle，此时可以考虑把数据写在内存中，但是内存不稳定，所以可以考虑增加副本。建议采用MEMONY_AND_DISK方式)； 
+- 第二部分：使用Shuffle数据的阶段(Reduce阶段，额外补充，Shuffle读数据：需要实现ShuffleManager的getReader，Reader会向Driver去获取上一个Stage产生的Shuffle数据)。 
+2.Spark的Job会被划分成很多Stage: 
+- 如果只要一个Stage，则这个Job就相当于只有一个Mapper段，当然不会产生Shuffle，适合于简单的ETL。如果不止一个Stage，则最后一个Stage就是最终的Reducer，最左侧的第一个Stage就仅仅是整个Job的Mapper，中间所有的任意一个Stage是其父Stage的Reducer且是其子Stage的Mapper； 
+
+
+
 ### Spark shuffle 机制之—— HashShuffle介绍
 
 #### 1.Spark 中的 HashShuffle介绍
@@ -32,6 +43,24 @@ HashShuffle 也有它的弱点：
 
 **Consolidated HashShuffle 也有它的弱点**： 
 - 如果 Reducer 端的并行任务或者是数据分片过多的话则 Core * Reducer Task 依旧过大，也会产生很多小文件。
+
+### 5.Shuffle 性能调优思考
+Shuffle可能面临的问题，运行 Task 的时候才会产生 Shuffle (Shuffle 已经融化在 Spark 的算子中)
+
+- 几千台或者是上万台的机器进行汇聚计算，数据量会非常大，网络传输会很大
+- 数据如何分类其实就是 partition，即如何 Partition、Hash 、Sort 、计算
+- 负载均衡 (数据倾斜）
+- 网络传输效率，需要压缩或解压缩之间做出权衡，序列化 和 反序列化也是要考虑的问题
+
+具体的 Task 进行计算的时候尽一切最大可能使得数据具备 Process Locality 的特性，退而求其次是增加数据分片，减少每个 Task 处理的数据量，基于Shuffle 和数据倾斜所导致的一系列问题，可以延伸出很多不同的调优点，比如说：
+
+Mapper端的 Buffer 应该设置为多大呢？
+- Reducer端的 Buffer 应该设置为多大呢？如果 Reducer 太少的话，这会限制了抓取多少数据
+- 在数据传输的过程中是否有压缩以及该用什么方式去压缩，默应是用 snappy 的压缩方式。
+- 网络传输失败重试的次数，每次重试之间间隔多少时间。
+
+> Spark HashShuffle 源码鉴赏: https://www.cnblogs.com/jcchoiling/p/6431969.html
+
 
 
 
