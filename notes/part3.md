@@ -64,7 +64,11 @@ RDD 的操作函数(operation)主要分为2种类型 Transformation 和 Action.
 | Transformation | Map,filter,groupBy,join, union,reduce,sort,partitionBy | `返回值还是 RDD`,不会马上 提交 Spark 集群运行
 | Action | count,collect,take,save, show | `返回值不是 RDD`,会形成 DAG 图,提交 Spark 集群运行 并立即返回结果
 
-Transformation 操作不是马上提交 Spark 集群执行的,Spark 在遇到 Transformation 操作时只会记录需要这样的操作,并不会去执行,需要等到有 Action 操作的时候才会真正启动计算过程进行计算.针对每个 Action,Spark 会生成一个 Job, 从数据的创建开始,经过 Transformation, 结尾是 Action 操作.这些操作对应形成一个有向无环图(DAG),形成 DAG 的先决条件是最后的函数操作是一个Action. 
+Transformation 操作不是马上提交 Spark 集群执行的,Spark 在遇到 Transformation 操作时只会记录需要这样的操作,并不会去执行,需要等到有 Action 操作的时候才会真正启动计算过程进行计算.
+
+针对每个 Action,Spark 会生成一个 Job, 从数据的创建开始,经过 Transformation, 结尾是 Action 操作.
+
+这些操作对应形成一个有向无环图(DAG),形成 DAG 的先决条件是最后的函数操作是一个Action. 
 
 ```
  //1.定义了以一个HDFS文件（由数行文本组成）为基础的RDD
