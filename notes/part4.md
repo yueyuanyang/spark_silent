@@ -8,7 +8,7 @@
 
 2. Spark的Job会被划分成很多Stage: 
 
-如果只要一个Stage，则这个Job就相当于只有一个Mapper段，当然不会产生Shuffle，适合于简单的ETL。如果不止一个Stage，则最后一个Stage就是最终的Reducer，最左侧的第一个Stage就仅仅是整个Job的Mapper，中间所有的任意一个Stage是其父Stage的Reducer且是其子Stage的Mapper； 
+如果只要一个Stage，则这个Job就相当于只有一个Mapper段，当然不会产生Shuffle，适合于简单的ETL。如果不止一个Stage，则最后一个Stage就是最终的Reducer，最左侧的第一个Stage就仅仅是整个Job 的 Mapper，中间所有的任意一个Stage是其父Stage的Reducer且是其子Stage的 Mapper;
 
 #### 2. Sort-Based Shuffle 
 
@@ -50,14 +50,13 @@ spark.shuffle.manager SORT 配置Shuffle方式是SORT.
 
 涉及问题：Sorted-based Shuffle：会产生 2 x M(M代表了Mapper阶段中并行的Partition的总数量，其实就是ShuffleMapTask的总数量)个Shuffle临时文件。 
 
-Shuffle产生的临时文件的数量的变化一次为： 
-```
-Basic Hash Shuffle: M*R; 
-Consalidate方式的Hash Shuffle: C*R; 
-Sort-based Shuffle: 2*M; 
-```
+**Shuffle产生的临时文件的数量的变化一次为**： 
 
+**Basic Hash Shuffle:** M x R; 
+**Consalidate方式的Hash Shuffle:** C x R; 
+**Sort-based Shuffle:**  2 x M; 
 
+---
 
 ### Spark shuffle 机制之—— HashShuffle介绍
 
