@@ -3,9 +3,42 @@
 
 1.Shuffle一般包含两个阶段任务： 
 - 第一部分：产生Shuffle数据的阶段(Map阶段，额外补充，需要实现ShuffleManager中的getWriter来写数据(数据可以通过BlockManager写到Memory，Disk，Tachyon等，例如想非常快的Shuffle，此时可以考虑把数据写在内存中，但是内存不稳定，所以可以考虑增加副本。建议采用MEMONY_AND_DISK方式)； 
-- 第二部分：使用Shuffle数据的阶段(Reduce阶段，额外补充，Shuffle读数据：需要实现ShuffleManager的getReader，Reader会向Driver去获取上一个Stage产生的Shuffle数据)。 
+- 第二部分：使用Shuffle数据的阶段(Reduce阶段，额外补充，Shuffle读数据：需要实现ShuffleManager的getReader，Reader会向Driver去获取上一个Stage产生的Shuffle数据)。
+
 2.Spark的Job会被划分成很多Stage: 
-- 如果只要一个Stage，则这个Job就相当于只有一个Mapper段，当然不会产生Shuffle，适合于简单的ETL。如果不止一个Stage，则最后一个Stage就是最终的Reducer，最左侧的第一个Stage就仅仅是整个Job的Mapper，中间所有的任意一个Stage是其父Stage的Reducer且是其子Stage的Mapper； 
+
+如果只要一个Stage，则这个Job就相当于只有一个Mapper段，当然不会产生Shuffle，适合于简单的ETL。如果不止一个Stage，则最后一个Stage就是最终的Reducer，最左侧的第一个Stage就仅仅是整个Job的Mapper，中间所有的任意一个Stage是其父Stage的Reducer且是其子Stage的Mapper； 
+
+#### Sort-Based Shuffle 
+
+1.为了让Spark在更大规模的集群上更高性能处理更大规模的数据，于是就引入了Sort-based Shuffle!从此以后(Spark1.1版本开始)，Spark可以胜任任何规模(包括PB级别及PB以上的级别)的大数据的处理，尤其是钨丝计划的引入和优化，Spark更快速的在更大规模的集群处理更海量的数据的能力推向了一个新的巅峰！ 
+
+2.Spark1.6版本支持最少三种类型Shuffle：
+
+```
+val shortShuffleMgrNames = Map(
+  "hash" -> "org.apache.spark.shuffle.hash.HashShuffleManager",
+  "sort" -> "org.apache.spark.shuffle.sort.SortShuffleManager",
+  "tungsten-sort" -> "org.apache.spark.shuffle.sort.SortShuffleManager")
+val shuffleMgrName = conf.get("spark.shuffle.manager", "sort")
+val shuffleMgrClass = shortShuffleMgrNames.getOrElse(shuffleMgrName.toLowerCase, shuffleMgrName)
+val shuffleManager = instantiateClass[ShuffleManager](shuffleMgrClass)
+
+```
+
+实现ShuffleManager接口可以根据自己的业务实际需要最优化的使用自定义的Shuffle实现； 
+
+3.Spark1.6默认采用的就是Sort-based Shuffle的方式：
+
+```
+val shuffleMgrName = conf.get("spark.shuffle.manager", "sort")
+```
+
+上述源码说明，你可以在Spark配置文件中配置Spark框架运行时要使用的具体的ShuffleManager的实现。可以在conf/spark-default.conf加入如下内容： 
+spark.shuffle.manager SORT 配置Shuffle方式是SORT 
+
+4. Sort-based Shuffle的工作方式如下：Shuffle的目的就是：数据分类，然后数据聚集。 
+
 
 
 
