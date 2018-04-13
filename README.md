@@ -8,9 +8,9 @@
 
 ### spark 概念
 
-1.[spark杂记之一 —— Apache Spark RDD 详解](https://github.com/yueyuanyang/spark/blob/master/notes/part2.md)
-
-2.[spark杂记之一 —— Apache Spark 统一内存管理模型详解](https://github.com/yueyuanyang/spark/blob/master/notes/part2.md)
+1.[Apache Spark RDD 详解](https://github.com/yueyuanyang/spark_silent/blob/master/notes/part3.md)
+2.[Apache Spark 统一内存管理模型详解](https://github.com/yueyuanyang/spark/blob/master/notes/part2.md)
+2.[Apache Spark Shuffle模型——HashShuffle和Shuffle](https://github.com/yueyuanyang/spark/blob/master/notes/part3.md)
 
 
 ## 第二部分 
