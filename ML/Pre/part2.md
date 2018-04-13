@@ -20,6 +20,13 @@
 如果你用的是2.x版本需要下载 nlp-lang.jar。
 
 如果你用的是3.x以上版本只需要下载 ansj_seg-[version]-all-in-one.jar 一个jar包就能浪了。
+```
+ <dependency>
+   <groupId>org.ansj</groupId>
+   <artifactId>ansj_seg-5.0.1-all-in-one</artifactId>
+   <version>5.0.1</version>
+ </dependency>
+```
 
 本文使用的是ansj5.0.1版本,在云盘 https://pan.baidu.com/disk/home?#list/vmode=list&path=%2Fjar 下载
 
