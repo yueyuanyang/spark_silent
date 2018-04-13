@@ -1,5 +1,6 @@
 ####  Spark shuffle 机制之—— Sort-Based Shuffle 介绍
-#### 1.为什么需要Sort-Based Shuffle? 
+
+#### 1. 为什么需要Sort-Based Shuffle? 
 
 1.Shuffle一般包含两个阶段任务： 
 - 第一部分：产生Shuffle数据的阶段(Map阶段，额外补充，需要实现ShuffleManager中的getWriter来写数据(数据可以通过BlockManager写到Memory，Disk，Tachyon等，例如想非常快的Shuffle，此时可以考虑把数据写在内存中，但是内存不稳定，所以可以考虑增加副本。建议采用MEMONY_AND_DISK方式)； 
@@ -9,7 +10,7 @@
 
 如果只要一个Stage，则这个Job就相当于只有一个Mapper段，当然不会产生Shuffle，适合于简单的ETL。如果不止一个Stage，则最后一个Stage就是最终的Reducer，最左侧的第一个Stage就仅仅是整个Job的Mapper，中间所有的任意一个Stage是其父Stage的Reducer且是其子Stage的Mapper； 
 
-#### Sort-Based Shuffle 
+#### 2. Sort-Based Shuffle 
 
 1.为了让Spark在更大规模的集群上更高性能处理更大规模的数据，于是就引入了Sort-based Shuffle!从此以后(Spark1.1版本开始)，Spark可以胜任任何规模(包括PB级别及PB以上的级别)的大数据的处理，尤其是钨丝计划的引入和优化，Spark更快速的在更大规模的集群处理更海量的数据的能力推向了一个新的巅峰！ 
 
@@ -35,10 +36,24 @@ val shuffleMgrName = conf.get("spark.shuffle.manager", "sort")
 ```
 
 上述源码说明，你可以在Spark配置文件中配置Spark框架运行时要使用的具体的ShuffleManager的实现。可以在conf/spark-default.conf加入如下内容： 
-spark.shuffle.manager SORT 配置Shuffle方式是SORT 
+spark.shuffle.manager SORT 配置Shuffle方式是SORT.
 
 4. Sort-based Shuffle的工作方式如下：Shuffle的目的就是：数据分类，然后数据聚集。 
 
+![t12](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/t12.png)
+
+1) 首先每个ShuffleMapTask不会为每个Reducer单独生成一个文件，相反，Sort-based Shuffle会把Mapper中每个ShuffleMapTask所有的输出数据Data只写到一个文件中。因为每个ShuffleMapTask中的数据会被分类，所以Sort-based Shuffle使用了index文件存储具体ShuffleMapTask输出数据在同一个Data文件中是如何分类的信息！
+
+2) 基于Sort-base的Shuffle会在Mapper中的每一个ShuffleMapTask中产生两个文件：Data文件和Index文件，其中Data文件是存储当前Task的Shuffle输出的。而index文件中则存储了Data文件中的数据通过Partitioner的分类信息，此时下一个阶段的Stage中的Task就是根据这个Index文件获取自己所要抓取的上一个Stage中的ShuffleMapTask产生的数据的，Reducer就是根据index文件来获取属于自己的数据。 
+
+涉及问题：Sorted-based Shuffle：会产生 2 x M(M代表了Mapper阶段中并行的Partition的总数量，其实就是ShuffleMapTask的总数量)个Shuffle临时文件。 
+
+Shuffle产生的临时文件的数量的变化一次为： 
+```
+Basic Hash Shuffle: M*R; 
+Consalidate方式的Hash Shuffle: C*R; 
+Sort-based Shuffle: 2*M; 
+```
 
 
 
