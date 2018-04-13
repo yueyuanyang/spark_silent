@@ -1,3 +1,5 @@
+### Apache Spark Shuffle模型 —— HashShuffle 和 SortShuffle
+
 ####  Spark shuffle 机制之—— Sort-Based Shuffle 介绍
 
 #### 1. 为什么需要Sort-Based Shuffle? 
