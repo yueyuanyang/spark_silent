@@ -102,8 +102,10 @@ OK，我现在要解释两个概念NO.1 什么是lineage？，NO.2 transformatio
 
 **1. 在spark中如何表示RDD之间的依赖关系分为两类**： 
 
-窄依赖：每个父RDD的分区都至多被一个子RDD的分区使用，即为OneToOneDependecies； 
+窄依赖：每个父RDD的分区都至多被一个子RDD的分区使用，即为OneToOneDependecies；
+
 宽依赖：多个子RDD的分区依赖一个父RDD的分区，即为OneToManyDependecies。 
+
 例如，map操作是一种窄依赖，而join操作是一种宽依赖（除非父RDD已经基于Hash策略被划分过了）
 
 **2.详细介绍**： 
