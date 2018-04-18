@@ -156,7 +156,10 @@ public class AnsjWordFilter {
     }  
 }  
 /* 
- * 您好/l,欢迎/v,使用/v,ansj/en,seg/en,深圳/ns,有/v,没/d,有/v,村/n,这里/r,有/v,宽带/nz,吗/y,ansj/en,中文/nz,分词/n,在/p,这里/r,如果/c,你/r,遇到/v,什么/r,问题/n,都/d,可以/v,联系/v,我/r,我/r,一定/d,尽/v,我/r,所/u,能/v,帮助/v,大家/r,ansj/en,seg/en,更/d,快/a,更/d,准/a,更/d,自由/a 
+ * 您好/l,欢迎/v,使用/v,ansj/en,seg/en,深圳/ns,有/v,没/d,有/v,村/n,这里/r,有/v,
+ 宽带/nz,吗/y,ansj/en,中文/nz,分词/n,在/p,这里/r,如果/c,你/r,遇到/v,什么/r,问题/n,
+ 都/d,可以/v,联系/v,我/r,我/r,一定/d,尽/v,我/r,所/u,能/v,帮助/v,大家/r,ansj/en,seg/en,
+ 更/d,快/a,更/d,准/a,更/d,自由/a 
  */  
 ```
 
