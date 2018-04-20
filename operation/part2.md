@@ -2,7 +2,7 @@
 # Spark-Redis
 
 可以从 [Redis](http://redis.io) with [Apache Spark](http://spark.apache.org/)这里查看读、 写操作
-
+[spark-redis源码地址](https://github.com/RedisLabs/spark-redis)
 
 Spark-Redis提供了所有Redis数据结构的访问权限——字 符串，哈希，列表，集合和排序集合,读取数据转为Spark的RDD。 该库可以与Redis独立以及集群数据库一起使用。当与Redis集群一起使用时，Spark-Redis知道其分区方案，并根据重新分片和节点故障事件进行调整。
 
