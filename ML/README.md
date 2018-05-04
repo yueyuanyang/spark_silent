@@ -12,4 +12,4 @@
 [特征提取—— IF-IDF,wordsVec,CountVectorizer]()
 
 #### 聚类算法
-[1.LDA 聚类算法]()
+[1.LDA 聚类算法](https://github.com/yueyuanyang/spark_silent/blob/master/ML/mllib/part3.md)
