@@ -13,3 +13,7 @@
 
 #### 聚类算法
 [1.LDA 聚类算法](https://github.com/yueyuanyang/spark_silent/blob/master/ML/mllib/part3.md)
+### 分类算法
+[1.SVM 分类算法](https://github.com/yueyuanyang/spark_silent/blob/master/ML/mllib/part4.md)
+
+
