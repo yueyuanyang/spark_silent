@@ -69,7 +69,7 @@
 
 [2. spark 优雅的操作redis(官方文档)](https://github.com/yueyuanyang/spark_silent/blob/master/operation/part2.md)
 
-[3. Apache Spark将数据写入ElasticSearch](https://github.com/yueyuanyang/spark_silent/blob/master/operation/part3.md)
+[3. Apache Spark将数据写入\读取 ElasticSearch](https://github.com/yueyuanyang/spark_silent/blob/master/operation/part3.md)
 
 ## 第N+2部分
 ### spark 面试篇
