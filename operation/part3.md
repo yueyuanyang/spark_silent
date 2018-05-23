@@ -1,0 +1,4 @@
+## 使用Apache Spark将数据写入ElasticSearch
+
+ElasticSearch是一个基于Lucene的搜索服务器。它提供了一个分布式多用户能力的全文搜索引擎，基于RESTful web接口。Elasticsearch是用Java开发的，并作为Apache许可条款下的开放源码发布，是当前流行的企业级搜索引擎。设计用于云计算中，能够达到实时搜索，稳定，可靠，快速，安装使用方便。
+本文并不打算介绍ElasticSearch的概念，安装部署等知识，而是直接介绍如何使用Apache Spark将数据写入到ElasticSearch中。本文使用的是类库是elasticsearch-hadoop，其从2.1版本开始提供了内置 支持Apache Spark的功能，在使用elasticsearch-hadoop之前，我们需要引入依赖：
