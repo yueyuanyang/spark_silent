@@ -4,7 +4,7 @@
 ### spark 杂记
 1.[spark杂记之一 —— 如何设置spark日志的打印级别](https://github.com/yueyuanyang/spark/blob/master/notes/part1.md)
 
-1.[spark杂记之二 —— CDH中如何升级Spark](https://github.com/yueyuanyang/spark/blob/master/notes/part5.md)
+1.[spark杂记之二 —— CDH中如何升级Spark](https://github.com/yueyuanyang/spark_silent/blob/master/notes/part5.md)
 
 ## 第一部分
 
