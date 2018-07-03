@@ -93,6 +93,7 @@ spark.history.fs.logDirectory  hdfs://nameservice1/user/spark/applicationHistory
 
 #### 第三步，在hdfs中上传yarn使用的lib
 
+![p13](https://github.com/yueyuanyang/spark_silent/blob/master/notes/img/p13.png)
 
 最后，找一个hello world启动下试试吧~
 
