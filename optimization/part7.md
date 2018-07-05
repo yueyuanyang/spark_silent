@@ -61,5 +61,17 @@ charCounts.collect()
 - 当进行联合的规约操作时，避免使用 groupByKey。举个例子:rdd.groupByKey().mapValues(_ .sum) 与 rdd.reduceByKey(_ + _) 执行的结果是一样的，但是前者需要把全部的数据通过网络传递一遍，而后者只需要根据每个 key 局部的 partition 累积结果，在 shuffle 的之后把局部的累积值相加后得到结果。
 
 - 当输入和输入的类型不一致时，避免使用 reduceByKey。举个例子，我们需要实现为每一个key查找所有不相同的 string。一个方法是利用 map 把每个元素的转换成一个 Set，再使用 reduceByKey 将这些 Set 合并起来
+```
+rdd.map(kv => (kv._1, new Set[String]() + kv._2))
+    .reduceByKey(_ ++ _)
+```
+这段代码生成了无数的非必须的对象，因为每个需要为每个 record 新建一个 Set。这里使用 aggregateByKey 更加适合，因为这个操作是在 map 阶段做聚合。
 
+```
+val zero = new collection.mutable.Set[String]()
+rdd.aggregateByKey(zero)(
+    (set, v) => set += v,
+    (set1, set2) => set1 ++= set2)
+```
 
+- 避免 flatMap-join-groupBy 的模式。当有两个已经按照key分组的数据集，你希望将两个数据集合并，并且保持分组，这种情况可以使用 cogroup。这样可以避免对group进行打包解包的开销。
