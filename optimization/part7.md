@@ -75,3 +75,40 @@ rdd.aggregateByKey(zero)(
 ```
 
 - 避免 flatMap-join-groupBy 的模式。当有两个已经按照key分组的数据集，你希望将两个数据集合并，并且保持分组，这种情况可以使用 cogroup。这样可以避免对group进行打包解包的开销。
+
+
+### 什么时候不发生 Shuffle
+当然了解在哪些 transformation 上不会发生 shuffle 也是非常重要的。当前一个 transformation 已经用相同的 patitioner 把数据分 patition 了，Spark知道如何避免 shuffle。参考一下代码：
+```
+rdd1 = someRdd.reduceByKey(...)
+rdd2 = someOtherRdd.reduceByKey(...)
+rdd3 = rdd1.join(rdd2)
+```
+因为没有 partitioner 传递给 reduceByKey，所以系统使用默认的 partitioner，所以 rdd1 和 rdd2 都会使用 hash 进行分 partition。代码中的两个 reduceByKey 会发生两次 shuffle 。如果 RDD 包含相同个数的 partition， join 的时候将不会发生额外的 shuffle。因为这里的 RDD 使用相同的 hash 方式进行 partition，所以全部 RDD 中同一个 partition 中的 key的集合都是相同的。因此，rdd3中一个 partiton 的输出只依赖rdd2和rdd1的同一个对应的 partition，所以第三次 shuffle 是不必要的。
+
+举个例子说，当 someRdd 有4个 partition， someOtherRdd 有两个 partition，两个 reduceByKey 都使用3个 partiton，所有的 task 会按照如下的方式执行：
+
+![p4]()
+
+如果 rdd1 和 rdd2 在 reduceByKey 时使用不同的 partitioner 或者使用相同的 partitioner 但是 partition 的个数不同的情况，那么只用一个 RDD (partiton 数更少的那个)需要重新 shuffle。
+
+相同的 tansformation，相同的输入，不同的 partition 个数：
+
+![p5]()
+
+当两个数据集需要 join 的时候，避免 shuffle 的一个方法是使用 broadcast variables。如果一个数据集小到能够塞进一个 executor 的内存中，那么它就可以在 driver 中写入到一个 hash table中，然后 broadcast 到所有的 executor 中。然后 map transformation 可以引用这个 hash table 作查询。
+
+### 什么情况下 Shuffle 越多越好
+尽可能减少 shuffle 的准则也有例外的场合。如果额外的 shuffle 能够增加并发那么这也能够提高性能。比如当你的数据保存在几个没有切分过的大文件中时，那么使用 InputFormat 产生分 partition 可能会导致每个 partiton 中聚集了大量的 record，如果 partition 不够，导致没有启动足够的并发。在这种情况下，我们需要在数据载入之后使用 repartiton （会导致shuffle)提高 partiton 的个数，这样能够充分使用集群的CPU。
+
+另外一种例外情况是在使用 recude 或者 aggregate action 聚集数据到 driver 时，如果数据把很多 partititon 个数的数据，单进程执行的 driver merge 所有 partition 的输出时很容易成为计算的瓶颈。为了缓解 driver 的计算压力，可以使用 reduceByKey 或者 aggregateByKey 执行分布式的 aggregate 操作把数据分布到更少的 partition 上。每个 partition 中的数据并行的进行 merge，再把 merge 的结果发个 driver 以进行最后一轮 aggregation。查看 treeReduce 和 treeAggregate 查看如何这么使用的例子。
+
+这个技巧在已经按照 Key 聚集的数据集上格外有效，比如当一个应用是需要统计一个语料库中每个单词出现的次数，并且把结果输出到一个map中。一个实现的方式是使用 aggregation，在每个 partition 中本地计算一个 map，然后在 driver 中把各个 partition 中计算的 map merge 起来。另一种方式是通过 aggregateByKey 把 merge 的操作分布到各个 partiton 中计算，然后在简单地通过 collectAsMap 把结果输出到 driver 中。
+
+### 二次排序
+还有一个重要的技能是了解接口 repartitionAndSortWithinPartitions transformation。这是一个听起来很晦涩的 transformation，但是却能涵盖各种奇怪情况下的排序，这个 transformation 把排序推迟到 shuffle 操作中，这使大量的数据有效的输出，排序操作可以和其他操作合并。
+
+举例说，Apache Hive on Spark 在join的实现中，使用了这个 transformation 。而且这个操作在 secondary sort 模式中扮演着至关重要的角色。secondary sort 模式是指用户期望数据按照 key 分组，并且希望按照特定的顺序遍历 value。使用 repartitionAndSortWithinPartitions 再加上一部分用户的额外的工作可以实现 secondary sort。
+
+### 结论
+现在你应该对完成一个高效的 Spark 程序所需的所有基本要素有了很好的了解。在 Part II 中将详细介绍资源调用、并发以及数据结构相关的调试。
