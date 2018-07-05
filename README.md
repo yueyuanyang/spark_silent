@@ -63,6 +63,8 @@
 4. [spark-submit提交参数列表](https://github.com/yueyuanyang/spark/blob/master/optimization/part4.md)
 5. [spark submit参数调优](https://github.com/yueyuanyang/spark/blob/master/optimization/part5.md)
 6. [spark 配置详解列表](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/part6.md)
+6. [spark 作业性能调优(一)](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/part7.md)
+6. [spark 作业性能调优(二)](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/part8.md)
 
 ## 第N+1部分
 ### spark 操作篇
