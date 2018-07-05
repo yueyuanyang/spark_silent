@@ -42,11 +42,11 @@ charCounts.collect()
 
 这里还有一个更加复杂的 transfromation 图，包含一个有多路依赖的 join transformation。
 
-![P2](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/p2.png)
+![P2](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/P2.png)
 
 粉红色的框框展示了运行时使用的 stage 图。
 
-![P3](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/p3.png)
+![P3](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/P3.png)
 
 运行到每个 stage 的边界时，数据在父 stage 中按照 task 写到磁盘上，而在子 stage 中通过网络按照 task 去读取数据。这些操作会导致很重的网络以及磁盘的I/O，所以 stage 的边界是非常占资源的，在编写 Spark 程序的时候需要尽量避免的。父 stage 中 partition 个数与子 stage 的 partition 个数可能不同，所以那些产生 stage 边界的 transformation 常常需要接受一个 numPartition 的参数来觉得子 stage 中的数据将被切分为多少个 partition。
 
