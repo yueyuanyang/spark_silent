@@ -8,7 +8,7 @@
 
 driver 主要负责调度一些高层次的任务流（flow of work）。exectuor 负责执行这些任务，这些任务以 task 的形式存在， 同时存储用户设置需要caching的数据。 task 和所有的 executor 的生命周期为整个程序的运行过程（如果使用了dynamic resource allocation 时可能不是这样的）。如何调度这些进程是通过集群管理应用完成的（比如YARN，Mesos，Spark Standalone），但是任何一个 Spark 程序都会包含一个 driver 和多个 executor 进程。
 
-![P1]()
+![P1](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/p1.png)
 
 
 在执行层次结构的最上方是一系列 Job。调用一个Spark内部的 action 会产生一个 Spark job 来完成它。 为了确定这些job实际的内容，Spark 检查 RDD 的DAG再计算出执行 plan 。这个 plan 以最远端的 RDD 为起点（最远端指的是对外没有依赖的 RDD 或者 数据已经缓存下来的 RDD），产生结果 RDD 的 action 为结束 。
@@ -42,11 +42,11 @@ charCounts.collect()
 
 这里还有一个更加复杂的 transfromation 图，包含一个有多路依赖的 join transformation。
 
-![P2]()
+![P2](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/p2.png)
 
 粉红色的框框展示了运行时使用的 stage 图。
 
-![P3]()
+![P3](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/p3.png)
 
 运行到每个 stage 的边界时，数据在父 stage 中按照 task 写到磁盘上，而在子 stage 中通过网络按照 task 去读取数据。这些操作会导致很重的网络以及磁盘的I/O，所以 stage 的边界是非常占资源的，在编写 Spark 程序的时候需要尽量避免的。父 stage 中 partition 个数与子 stage 的 partition 个数可能不同，所以那些产生 stage 边界的 transformation 常常需要接受一个 numPartition 的参数来觉得子 stage 中的数据将被切分为多少个 partition。
 
@@ -88,13 +88,13 @@ rdd3 = rdd1.join(rdd2)
 
 举个例子说，当 someRdd 有4个 partition， someOtherRdd 有两个 partition，两个 reduceByKey 都使用3个 partiton，所有的 task 会按照如下的方式执行：
 
-![p4]()
+![p4](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/p4.png)
 
 如果 rdd1 和 rdd2 在 reduceByKey 时使用不同的 partitioner 或者使用相同的 partitioner 但是 partition 的个数不同的情况，那么只用一个 RDD (partiton 数更少的那个)需要重新 shuffle。
 
 相同的 tansformation，相同的输入，不同的 partition 个数：
 
-![p5]()
+![p5](https://github.com/yueyuanyang/spark_silent/blob/master/optimization/img/p5.png)
 
 当两个数据集需要 join 的时候，避免 shuffle 的一个方法是使用 broadcast variables。如果一个数据集小到能够塞进一个 executor 的内存中，那么它就可以在 driver 中写入到一个 hash table中，然后 broadcast 到所有的 executor 中。然后 map transformation 可以引用这个 hash table 作查询。
 
