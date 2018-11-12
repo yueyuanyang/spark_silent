@@ -128,7 +128,7 @@ sc.stop()
 
 ```
 
-**4. 读取parquet文件创建DataFrame*
+**4.读取parquet文件创建DataFrame**
 
 **注意**：
 
