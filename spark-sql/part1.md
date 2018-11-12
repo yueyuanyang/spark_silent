@@ -4,7 +4,7 @@
 
 **1. 非json格式的RDD创建DataFrame（重要）**
 
-**1) 动态创建Schema将非json格式的RDD转换成DataFrame（`建议使用`）**
+**1)动态创建Schema将非json格式的RDD转换成DataFrame（`建议使用`）**
 
 **代码实现**
 
@@ -31,7 +31,7 @@ df.printSchema()
 sc.stop()
 ```
 
-**2) 通过反射的方式将非json格式的RDD转换成DataFrame（`不建议使用`） **
+**2)通过反射的方式将非json格式的RDD转换成DataFrame（`不建议使用`）**
 
 **代码实现**
 
@@ -68,7 +68,7 @@ sc.stop()
 ```
 
 
-**2. 读取json格式的文件创建DataFrame**
+**2.读取json格式的文件创建DataFrame**
 
 **代码实现**
 
@@ -128,7 +128,7 @@ sc.stop()
 
 ```
 
-***4. 读取parquet文件创建DataFrame*
+**4. 读取parquet文件创建DataFrame*
 
 **注意**：
 
