@@ -79,6 +79,7 @@ object CreateDataSet {
     import spark.implicits._
     val person = Seq(Person("Andy", 32),Person("tom", 31),Person("Andy", 23)).toDS()
     
+    // 根据已有的DataSet 去生成新的
     val other_person = person.map(_.name)
     
     other_person.show()
