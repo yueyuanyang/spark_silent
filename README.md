@@ -40,8 +40,12 @@
 4. [Spark RDD行动键值操作(1) - cogroup、join](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part13.md)
 5. [Spark RDD行动键值操作(1) - leftOuterJoin、rightOuterJoin、subtractByKey](https://github.com/yueyuanyang/spark/tree/master/sparkCore/part15.md)
 
+## 第三部分 
+### spark-sql(图计算)
 
-## 第二部分 
+1. [spark-sql dataFrame创建](https://github.com/yueyuanyang/spark/blob/master/graph/part1.md)
+
+## 第四部分 
 ### spark graph(图计算)
 1. [spark graph 构建graph和聚合消息](https://github.com/yueyuanyang/spark/blob/master/graph/part1.md)
 2. [spark graph 操作01 —— edgeListFile导入数据](https://github.com/yueyuanyang/spark/blob/master/graph/part2.md)
