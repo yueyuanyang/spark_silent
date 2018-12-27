@@ -50,11 +50,11 @@ host.port = 2282
 
 如果多个config 文件有冲突时，解决方案有:
 
-```
 - a.withFallback(b) //a和b合并，如果有相同的key，以a为准 
 - a.withOnlyPath(String path) //只取a里的path下的配置
 - a.withoutPath(String path) //只取a里出path外的配置
 
+```
 Config firstConfig = ConfigFactory.load("test1.conf");
 Config secondConfig = ConfigFactory.load("test2.conf");
  
