@@ -6,7 +6,7 @@
 
 2.[spark杂记之二 —— CDH中如何升级Spark](https://github.com/yueyuanyang/spark_silent/blob/master/notes/part5.md)
 
-3.[spark杂记之二 —— Spark 中的 --files 参数与 ConfigFactory配置工厂方法](https://github.com/yueyuanyang/spark_silent/blob/master/notes/part6.md)
+3.[spark杂记之三 —— Spark 中的 --files 参数与 ConfigFactory配置工厂方法](https://github.com/yueyuanyang/spark_silent/blob/master/notes/part6.md)
 
 ## 第一部分
 
