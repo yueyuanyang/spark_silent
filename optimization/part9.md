@@ -11,5 +11,5 @@
 
 - action are eager
   - trransformations产生
-    narrow(窄依赖)
-    wide(reuires shuffle)(宽依赖)
+    - narrow(窄依赖)
+    - wide(reuires shuffle)(宽依赖)
