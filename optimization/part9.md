@@ -10,6 +10,10 @@
 ![https://github.com/yueyuanyang/spark_silent/tree/master/optimization/img/opti1.png]
 
 - action are eager
-  - trransformations产生
+  - trransformations产生（lazy）
     - narrow(窄依赖)
     - wide(reuires shuffle)(宽依赖)
+  - 产生jos
+    - 产生 stages
+     - 产生 Tasks
+        do work & utilize hardware
